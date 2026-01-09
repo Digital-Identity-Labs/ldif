@@ -3,20 +3,32 @@ defmodule LDIF do
   Documentation for `LDIF`.
   """
 
+  alias LDIF.Entry
+  alias LDIF.Import
+
   @default_import_opts [
     single_value: [],
     lang_tags: true,
-    reject: []
+    ext_files: true,
+    ext_http: false,
+    reject: [],
+    http: []
   ]
 
-  alias LDIF.Import
-
-  def import_entries(ldif, opts \\ @default_import_opts) do
-    Import.entries(ldif, opts)
+  def entry(dn, attributes) do
+    Entry.new(dn, attributes)
   end
 
-  def import_changes(ldif, opts \\ @default_import_opts) do
-    Import.changes(ldif, opts)
+  def change(dn, attributes) do
+    Entry.new(dn, attributes)
+  end
+
+  def ldif_to_entries(ldif, opts \\ []) do
+    Import.entries(ldif, Keyword.merge(@default_import_opts, opts))
+  end
+
+  def ldif_to_changes(ldif, opts \\ []) do
+    Import.changes(ldif, Keyword.merge(@default_import_opts, opts))
   end
 
 end
