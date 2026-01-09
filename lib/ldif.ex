@@ -11,8 +11,12 @@ defmodule LDIF do
 
   alias LDIF.Import
 
-  def import(ldif, opts \\ @default_import_opts) do
-    Import.import(ldif, opts)
+  def import_entries(ldif, opts \\ @default_import_opts) do
+    Import.entries(ldif, opts)
+  end
+
+  def import_changes(ldif, opts \\ @default_import_opts) do
+    Import.changes(ldif, opts)
   end
 
 end

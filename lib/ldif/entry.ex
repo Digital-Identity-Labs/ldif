@@ -8,13 +8,12 @@ defmodule LDIF.Entry do
   #@derive Jason.Encoder
   defstruct [
     dn: nil,
-    type: :record,
     attributes: %{}
   ]
 
-  def new(dn, attributes, type \\ :simple) do
+  def new(dn, attributes) do
     attributes = Map.delete(attributes, "dn")
-    %Entry{dn: dn, attributes: attributes, type: type}
+    %Entry{dn: dn, attributes: attributes}
   end
 
 end
