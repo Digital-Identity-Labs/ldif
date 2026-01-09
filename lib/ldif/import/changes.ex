@@ -1,6 +1,10 @@
 defmodule  LDIF.Import.Changes do
 
-  alias LDIF.Change
+  alias LDIF.Add
+  alias LDIF.Modify
+  alias LDIF.Delete
+  alias LDIF.ModDN
+  alias LDIF.ModRDN
   alias LDIF.Import.Record
   alias LDIF.Import.Ingest
   alias LDIF.Import.Transform
@@ -9,7 +13,7 @@ defmodule  LDIF.Import.Changes do
     ldif
     |> Record.stream()
     |> Stream.map(fn entry_text -> ingest(entry_text, opts) end)
-    |> Stream.map(fn map -> Change.new(map["dn"], map) end)
+    |> Stream.flat_map(fn changes -> Enum.map(changes, fn map -> to_struct(map["dn"], map) end) end)
   end
 
   def ingest(text, opts) do
@@ -23,13 +27,13 @@ defmodule  LDIF.Import.Changes do
            changeset
            |> Enum.map(
                 fn
-                  [name, value] ->  Ingest.attribute(name, value, opts)
+                  [name, value] -> Ingest.attribute(name, value, opts)
                 end
               )
-             #           |> transform_attrs(opts)
+           |> Transform.attributes(opts)
            |> join(opts)
-           #           |> transform_entry(opts)
-           #           |> normalize(opts)
+           |> Transform.entry(opts)
+           |> normalize(opts)
          end
        )
   end
@@ -52,6 +56,7 @@ defmodule  LDIF.Import.Changes do
 
   def normalize(list, opts) do
     Map.new(list)
+    |> normalize(opts)
   end
 
   def split_changes(items, opts) do
@@ -61,11 +66,22 @@ defmodule  LDIF.Import.Changes do
   end
 
   def standalone_changes(changes, opts) do
-    Apex.ap(changes, label: "Changes IN")
-
     [["dn", dn] | _] = List.first(changes)
-    Enum.map(changes, fn change -> List.insert_at(change, 0, ["dn", dn]) end)
-    |> Apex.ap(label: "Changes OUT")
+    ["changetype", changetype] = Enum.find(List.first(changes), fn [k, v] -> k == "changetype"  end)
+    Enum.map(changes, fn change -> List.insert_at(change, 0, ["dn", dn]) |> List.insert_at(1, ["changetype", changetype]) end)
+
+  end
+
+  def to_struct(dn, data) do
+    type = List.first(data["changetype"])
+    case type do
+      "modify" -> Modify.new(dn, data)
+      "delete" -> Delete.new(dn, data)
+      "add" -> Add.new(dn, data)
+      "modrdn" -> ModRDN.new(dn, data)
+      "moddn" -> ModDN.new(dn, data)
+      _ -> raise "Unknown LDIF change type '#{type}'!"
+    end
 
   end
 
