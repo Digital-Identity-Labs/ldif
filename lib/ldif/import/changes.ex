@@ -78,7 +78,7 @@ defmodule  LDIF.Import.Changes do
       "modify" -> Modify.new(dn, data)
       "delete" -> Delete.new(dn, data)
       "add" -> Add.new(dn, data)
-      "modrdn" -> ModRDN.new(dn, data)
+      "modrdn" -> ModDN.new(dn, data)
       "moddn" -> ModDN.new(dn, data)
       _ -> raise "Unknown LDIF change type '#{type}'!"
     end

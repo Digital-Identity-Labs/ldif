@@ -9,7 +9,8 @@ defmodule LDIF.ModDN do
   defstruct [
     dn: nil,
     deleteoldrdn: true,
-    newsuperior: nil
+    newsuperior: nil,
+    newrdn: nil
   ]
 
   def new(dn, changes) do
@@ -17,10 +18,11 @@ defmodule LDIF.ModDN do
     changes = Map.delete(changes, "dn")
               |> Map.delete("changetype")
 
+    [newrdn] = Map.get(changes, "newrdn")
     [newsuperior] = Map.get(changes, "newsuperior")
     deleteoldrdn = Map.get(changes, "deleteoldrdn") == ["1"]
 
-    %ModDN{dn: dn, newsuperior: newsuperior, deleteoldrdn: deleteoldrdn}
+    %ModDN{dn: dn, newsuperior: newsuperior, deleteoldrdn: deleteoldrdn, newrdn: newrdn}
   end
 
 #  def change(change, entry)

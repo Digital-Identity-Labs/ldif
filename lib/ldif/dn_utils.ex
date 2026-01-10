@@ -1,4 +1,4 @@
-defmodule  LDIF.Utils do
+defmodule  LDIF.DNUtils do
   @moduledoc """
   Documentation for `Ldif`.
   """
@@ -25,6 +25,10 @@ defmodule  LDIF.Utils do
 
   def replace_rdn(dn, rdn) do
     add_rdn(superior(dn), rdn)
+  end
+
+  def replace_superior(dn, sdn) do
+    add_rdn(dn, rdn(sdn))
   end
 
   def ancestor_of?(dn1, dn2) do # ??

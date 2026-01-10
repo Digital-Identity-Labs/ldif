@@ -1,6 +1,6 @@
 defmodule  LDIF.Import.Transform do
 
-  alias LDIF.Utils
+  alias LDIF.DNUtils
 
   def attributes(map, opts) do
     map
@@ -73,7 +73,7 @@ defmodule  LDIF.Import.Transform do
 
   defp normalize_dns(entry, dnattrs) when is_list(dnattrs) do
     entry
-    |> Enum.map(fn {k, v} -> if k in dnattrs, do: {k, Utils.normalize_dn(v)}, else: {k, v} end)
+    |> Enum.map(fn {k, v} -> if k in dnattrs, do: {k, DNUtils.normalize_dn(v)}, else: {k, v} end)
   end
 
   defp normalize_dns(entry, _) do

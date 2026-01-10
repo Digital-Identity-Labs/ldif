@@ -4,7 +4,7 @@ defmodule LDIF.Entry do
   """
 
   alias __MODULE__
-  alias LDIF.Utils
+  alias LDIF.DNUtils
 
   #@derive Jason.Encoder
   defstruct [
@@ -17,6 +17,10 @@ defmodule LDIF.Entry do
     %Entry{dn: dn, attributes: attributes}
   end
 
+  def attributes(entry) do
+    entry.attributes || %{}
+  end
+
   def add(entry, attribute, values) do
     old = Map.get(entry.attributes, attribute, [])
     %{entry | attributes: Map.put(entry.attributes, attribute, normlist(old ++ List.wrap(values)))}
@@ -27,7 +31,7 @@ defmodule LDIF.Entry do
   end
 
   def modrdn(entry, rdn) do
-    dn = Utils.replace_rdn(entry.dn, rdn)
+    dn = DNUtils.replace_rdn(entry.dn, rdn)
     %{entry | dn: dn}
   end
 
