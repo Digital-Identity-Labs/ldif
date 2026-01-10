@@ -12,6 +12,7 @@ defmodule LDIF do
     ext_files: true,
     ext_http: false,
     reject: [],
+    normalize_dns: false,
     http: []
   ]
 

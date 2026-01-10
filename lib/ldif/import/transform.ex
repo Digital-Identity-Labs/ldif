@@ -1,11 +1,14 @@
 defmodule  LDIF.Import.Transform do
 
+  alias LDIF.Utils
+
   def attributes(map, opts) do
     map
     |> Enum.reject(&is_nil/1)
     |> language_tags(opts[:lang_tags])
     |> reject_attrs(opts[:reject])
     |> redact_values(opts[:redact])
+    |> normalize_dns(opts[:normalize_dns])
   end
 
   def entry(map, opts) do
@@ -62,5 +65,20 @@ defmodule  LDIF.Import.Transform do
     entry
     |> Enum.map(fn {k, v} -> if k in attrs, do: {k, "********"}, else: {k, v} end)
   end
+
+  defp normalize_dns(entry, true) do
+    entry
+    |> normalize_dns(["dn"])
+  end
+
+  defp normalize_dns(entry, dnattrs) when is_list(dnattrs) do
+    entry
+    |> Enum.map(fn {k, v} -> if k in dnattrs, do: {k, Utils.normalize_dn(v)}, else: {k, v} end)
+  end
+
+  defp normalize_dns(entry, _) do
+    entry
+  end
+
 
 end
