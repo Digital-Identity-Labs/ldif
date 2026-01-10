@@ -23,12 +23,26 @@ defmodule LDIF do
     Entry.new(dn, attributes)
   end
 
-  def ldif_to_entries(ldif, opts \\ []) do
+  def list_entries(ldif, opts \\ []) do
+    stream_entries(ldif, opts)
+    |> Enum.to_list()
+  end
+
+  def list_changes(ldif, opts \\ []) do
+    stream_changes(ldif, opts)
+    |> Enum.to_list()
+  end
+
+  def stream_entries(ldif, opts \\ []) do
     Import.entries(ldif, Keyword.merge(@default_import_opts, opts))
   end
 
-  def ldif_to_changes(ldif, opts \\ []) do
+  def stream_changes(ldif, opts \\ []) do
     Import.changes(ldif, Keyword.merge(@default_import_opts, opts))
+  end
+
+  def apply_changes(changes, entries) do
+    []
   end
 
 end
