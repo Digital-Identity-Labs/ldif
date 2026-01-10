@@ -23,4 +23,6 @@ defmodule LDIF.ModDN do
     %ModDN{dn: dn, newsuperior: newsuperior, deleteoldrdn: deleteoldrdn}
   end
 
+#  def change(change, entry)
+
 end

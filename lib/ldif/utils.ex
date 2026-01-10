@@ -19,6 +19,14 @@ defmodule  LDIF.Utils do
     String.replace_leading(normalize_dn(dn), "#{rdn(dn)},", "")
   end
 
+  def add_rdn(dn, rdn) do
+    Enum.join([rdn, dn], ",") |> normalize_dn()
+  end
+
+  def replace_rdn(dn, rdn) do
+    add_rdn(superior(dn), rdn)
+  end
+
   def ancestor_of?(dn1, dn2) do # ??
     String.starts_with?(normalize_dn(dn1), normalize_dn(dn2))
   end
