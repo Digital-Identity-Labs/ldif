@@ -1,7 +1,9 @@
 defmodule  LDIF.Import.Record do
 
   def stream(records_text) do
-    String.splitter(records_text, "\n\n", trim: true)
+    records_text
+    |> String.trim()
+    |> String.splitter("\n\n", trim: true)
   end
 
   def unfold(record_text, opts) do
@@ -12,6 +14,7 @@ defmodule  LDIF.Import.Record do
     record_text
     |> String.trim()
     |> String.split("\n")
+    |> Enum.reject(fn line -> String.starts_with?(line, "version:") end)
     |> Enum.reject(fn line -> String.starts_with?(line, "#") end)
     |> Enum.map(
          fn line ->

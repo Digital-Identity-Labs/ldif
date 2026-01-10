@@ -16,4 +16,18 @@ defmodule LDIF.Add do
     %Add{dn: dn, attributes: changes}
   end
 
+  def apply(change, entry) do
+    if DNUtils.normalize_dn(change.dn) == DNUtils.normalize_dn(entry.dn) do
+      nil
+    else
+      nil
+    end
+  end
+
+  defimpl LDIF.Change, for: LDIF.Add do
+    def apply(change, entry) do
+      Add.apply(change, entry)
+    end
+  end
+
 end

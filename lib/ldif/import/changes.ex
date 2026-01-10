@@ -25,11 +25,9 @@ defmodule  LDIF.Import.Changes do
     |> Enum.map(
          fn changeset ->
            changeset
-           |> Enum.map(
-                fn
-                  [name, value] -> Ingest.attribute(name, value, opts)
-                end
-              )
+           |> Enum.map(fn
+                   [name, value] -> Ingest.attribute(name, value, opts)
+                   other -> raise "Cannot parse line '#{other}' in LDIF!" end)
            |> Transform.attributes(opts)
            |> join(opts)
            |> Transform.entry(opts)

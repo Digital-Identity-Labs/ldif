@@ -4,6 +4,7 @@ defmodule LDIF.Delete do
   """
 
   alias __MODULE__
+  alias LDIF.DNUtils
 
   @changetypes
   #@derive Jason.Encoder
@@ -12,8 +13,23 @@ defmodule LDIF.Delete do
   ]
 
   def new(dn, changes) do
-    changes = Map.delete(changes, "dn") |> Map.delete("changetype")
+    changes = Map.delete(changes, "dn")
+              |> Map.delete("changetype")
     %Delete{dn: dn}
+  end
+
+  def apply(change, entry) do
+    if DNUtils.normalize_dn(change.dn) == DNUtils.normalize_dn(entry.dn) do
+      nil
+    else
+      entry
+    end
+  end
+
+  defimpl LDIF.Change, for: LDIF.Delete do
+    def apply(change, entry) do
+      Delete.apply(change, entry)
+    end
   end
 
 end

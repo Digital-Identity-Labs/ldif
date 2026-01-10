@@ -23,4 +23,17 @@ defmodule LDIF.Modify do
     %Modify{dn: dn, modification: String.to_atom(modification), attribute: attribute, values: values}
   end
 
+  def apply(change, entry) do
+    IO.puts "Modify"
+    entry
+  end
+
+  defimpl LDIF.Change, for: LDIF.Modify do
+    def apply(change, entry) do
+      Modify.apply(change, entry)
+    end
+  end
+
+
+
 end

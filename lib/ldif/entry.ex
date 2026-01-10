@@ -17,6 +17,18 @@ defmodule LDIF.Entry do
     %Entry{dn: dn, attributes: attributes}
   end
 
+  def dn(entry) do
+    entry.dn
+  end
+
+  def rdn(entry) do
+    DNUtils.rdn(entry.dn)
+  end
+
+  def superior(entry) do
+    DNUtils.superior(entry.dn)
+  end
+
   def attributes(entry) do
     entry.attributes || %{}
   end

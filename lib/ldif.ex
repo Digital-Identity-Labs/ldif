@@ -5,6 +5,7 @@ defmodule LDIF do
 
   alias LDIF.Entry
   alias LDIF.Import
+  alias LDIF.Apply
 
   @default_import_opts [
     single_value: [],
@@ -43,7 +44,7 @@ defmodule LDIF do
   end
 
   def apply_changes(changes, entries) do
-    []
+    Apply.apply(changes, entries)
   end
 
 end

@@ -6,7 +6,7 @@ defmodule  LDIF.DNUtils do
   def normalize_dn(dn) do
    String.trim(dn)
    |> String.downcase()
-   |> String.replace(" ", "", global: true)
+   |> String.replace(~r/,\s+/, ",", global: true)
   end
 
   def rdn(dn) do

@@ -1,18 +1,3 @@
-defmodule  LDIF.Change do
-  @moduledoc """
-  Documentation for `Ldif`.
-  """
-
-  @doc """
-  Hello world.
-
-  ## Examples
-
-      iex> Ldif.hello()
-      :world
-
-  """
-  def hello do
-    :world
-  end
+defprotocol LDIF.Change do
+  def apply(change, entry)
 end
