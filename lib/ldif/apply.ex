@@ -43,20 +43,23 @@ defmodule  LDIF.Apply do
     # Edits
     all_entries
     |> Enum.reject(fn entry -> is_struct(entry, Add) end)
-    |> Enum.flat_map(
+    |> Enum.map(
          fn entry ->
            changes = Map.get(changes_lookup, entry.dn, [])
            if Enum.empty?(changes) do
              [entry]
            else
+             Apex.ap(entry, label: "apply edits entry")
              Enum.reduce(
                changes,
                entry,
                fn
-                 change, nil -> nil
-                 change, entry -> List.wrap(Change.apply(change, entry))
-               end
-             )
+                 change, nil -> [nil]
+                 change, [entry1, entry2] -> [Change.apply(change, entry1)]
+                 change, [entry] -> [Change.apply(change, entry)]
+                 change, entry -> [Change.apply(change, entry)]
+               end) ## We are always assuming multiple return values
+             |> List.flatten()
              |> Enum.reject(&is_nil/1)
            end
          end

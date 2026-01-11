@@ -4,6 +4,7 @@ defmodule LDIF.ModDN do
   """
 
   alias __MODULE__
+  alias LDIF.DNUtils
 
   #@derive Jason.Encoder
   defstruct [
@@ -26,8 +27,30 @@ defmodule LDIF.ModDN do
   end
 
   def apply(change, entry) do
-    IO.puts "ModDN"
-    entry
+    if DNUtils.normalize_dn(change.dn) == DNUtils.normalize_dn(entry.dn) do
+
+      dn = change.dn
+      dn = if change.newrdn do
+        DNUtils.replace_rdn(dn, change.newrdn)
+      else
+        dn
+      end
+
+      dn = if change.newsuperior do
+        DNUtils.replace_superior(dn, change.newsuperior)
+      else
+        dn
+      end
+
+      cond do
+        dn == entry.dn -> entry
+        change.deleteoldrdn -> %{entry | dn: dn}
+        true -> [%{entry | dn: dn}, entry]
+      end
+
+    else
+      entry
+    end
   end
 
   defimpl LDIF.Change, for: LDIF.ModDN do

@@ -28,7 +28,7 @@ defmodule  LDIF.DNUtils do
   end
 
   def replace_superior(dn, sdn) do
-    add_rdn(dn, rdn(sdn))
+    add_rdn(sdn, rdn(dn))
   end
 
   def ancestor_of?(dn1, dn2) do # ??
