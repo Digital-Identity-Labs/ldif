@@ -4,6 +4,8 @@ defmodule LDIF.Add do
   """
 
   alias __MODULE__
+  alias LDIF.Entry
+  alias LDIF.DNUtils
 
   #@derive Jason.Encoder
   defstruct [
@@ -16,12 +18,12 @@ defmodule LDIF.Add do
     %Add{dn: dn, attributes: changes}
   end
 
+  def apply(change, nil) do
+    Entry.new(change.dn, change.attributes)
+  end
+
   def apply(change, entry) do
-    if DNUtils.normalize_dn(change.dn) == DNUtils.normalize_dn(entry.dn) do
-      nil
-    else
-      nil
-    end
+    raise "Cannot add to an existing entry!"
   end
 
   defimpl LDIF.Change, for: LDIF.Add do
