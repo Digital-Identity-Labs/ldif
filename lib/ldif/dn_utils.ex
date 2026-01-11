@@ -6,7 +6,8 @@ defmodule  LDIF.DNUtils do
   def normalize_dn(dn) do
    String.trim(dn)
    |> String.downcase()
-   |> String.replace(~r/,\s+/, ",", global: true)
+   |> String.replace(~r/\s*,\s*/, ",", global: true)
+   |> String.replace(~r/\s*=\s*/, "=", global: true)
   end
 
   def rdn(dn) do
@@ -31,12 +32,12 @@ defmodule  LDIF.DNUtils do
     add_rdn(sdn, rdn(dn))
   end
 
-  def ancestor_of?(dn1, dn2) do # ??
-    String.starts_with?(normalize_dn(dn1), normalize_dn(dn2))
+  def descendent_of?(dn1, dn2) do # ??
+    String.ends_with?(normalize_dn(dn1), normalize_dn(dn2))
   end
 
-  def descendent_of?(dn1, dn2) do # ??
-    String.starts_with(normalize_dn(dn2), normalize_dn(dn1))
+  def ancestor_of?(dn1, dn2) do # ??
+    String.ends_with?(normalize_dn(dn2), normalize_dn(dn1))
   end
 
 end

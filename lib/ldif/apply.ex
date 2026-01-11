@@ -17,6 +17,8 @@ defmodule  LDIF.Apply do
     apply_adds(all_changes, all_entries) ++ apply_edits(all_changes, all_entries)
   end
 
+  ############################
+
   def apply_adds(all_changes, all_entries) when is_list(all_changes) and is_list(all_entries) do
 
     entries_lookup = entries_lookup_map(all_entries)

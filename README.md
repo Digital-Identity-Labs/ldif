@@ -18,7 +18,7 @@ end
 * https://www.rfc-editor.org/rfc/rfc2849
 * https://en.wikipedia.org/wiki/LDAP_Data_Interchange_Format
 * https://datatracker.ietf.org/doc/html/rfc3866
-
+* https://ldapwiki.com/wiki/Wiki.jsp?page=Modrdn 
 
 
 Documentation can be generated with [ExDoc](https://github.com/elixir-lang/ex_doc)
