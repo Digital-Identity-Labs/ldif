@@ -61,11 +61,8 @@ defmodule LDIF.Modify do
 
   defimpl LDIF.Change, for: LDIF.Modify do
     def apply(change, entry) do
-
-      Apex.ap(change, label: "Modify Apply Change")
-      Apex.ap(entry, label: "Modify Apply Entry")
-
       Modify.apply(change, entry)
+      |> List.wrap()
     end
   end
 

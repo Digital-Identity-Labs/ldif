@@ -29,6 +29,7 @@ defmodule LDIF.Add do
   defimpl LDIF.Change, for: LDIF.Add do
     def apply(change, entry) do
       Add.apply(change, entry)
+      |> List.wrap()
     end
   end
 

@@ -21,7 +21,7 @@ defmodule LDIF.ModDN do
 
     [newrdn] = Map.get(changes, "newrdn", [nil])
     [newsuperior] = Map.get(changes, "newsuperior", [nil])
-    deleteoldrdn = Map.get(changes, "deleteoldrdn") == ["1"]
+    deleteoldrdn = Map.get(changes, "deleteoldrdn") == ["1"] or Map.get(changes, "deleteoldrdn") == true
 
     %ModDN{dn: dn, newsuperior: newsuperior, deleteoldrdn: deleteoldrdn, newrdn: newrdn}
   end
@@ -56,6 +56,7 @@ defmodule LDIF.ModDN do
   defimpl LDIF.Change, for: LDIF.ModDN do
     def apply(change, entry) do
       ModDN.apply(change, entry)
+      |> List.wrap()
     end
   end
 

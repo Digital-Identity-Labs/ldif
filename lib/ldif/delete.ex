@@ -29,6 +29,7 @@ defmodule LDIF.Delete do
   defimpl LDIF.Change, for: LDIF.Delete do
     def apply(change, entry) do
       Delete.apply(change, entry)
+      |> List.wrap()
     end
   end
 
