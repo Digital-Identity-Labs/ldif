@@ -1,19 +1,18 @@
-defmodule ModDNTest do
+defmodule AddTest do
   use ExUnit.Case
-  alias LDIF.ModDN
 
-#
+  alias LDIF.Add
+
 #  describe "new/2" do
 #    test "returns struct" do
-#      assert "cccc" = ModDN.new("", %{})
+#      assert "cccc" = Add.new("", %{})
 #    end
 #  end
 #
 #  describe "apply/2" do
 #    test "returns struct" do
-#      assert "cccc" = ModDN.apply(change, entry)
+#      assert "cccc" = Add.apply(change, entry)
 #    end
 #  end
-
 
 end
