@@ -57,8 +57,8 @@ defmodule  LDIF.Apply do
                changes,
                entry,
                fn
-                 change, nil -> [nil]
-                 change, [entry1, entry2] -> Change.apply(change, entry1)
+                 _change, nil -> [nil]
+                 change, [entry1, entry2] -> Change.apply(change, entry1) ++ [entry2]
                  change, [entry] -> Change.apply(change, entry)
                  change, entry -> Change.apply(change, entry)
                end)

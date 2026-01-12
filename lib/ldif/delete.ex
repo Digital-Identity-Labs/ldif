@@ -6,15 +6,14 @@ defmodule LDIF.Delete do
   alias __MODULE__
   alias LDIF.DNUtils
 
-  @changetypes
   #@derive Jason.Encoder
   defstruct [
     dn: nil
   ]
 
   def new(dn, changes) do
-    changes = Map.delete(changes, "dn")
-              |> Map.delete("changetype")
+    Map.delete(changes, "dn")
+    |> Map.delete("changetype")
     %Delete{dn: dn}
   end
 

@@ -1,14 +1,14 @@
 defmodule  LDIF.Import.Ingest do
 
-  def attribute("-", opts) do
+  def attribute("-", _opts) do
     nil
   end
 
-  def attribute("version", value, opts) do
+  def attribute("version", _value, _opts) do
     nil
   end
 
-  def attribute(name, ":" <> value, opts) do
+  def attribute(name, ":" <> value, _opts) do
     decoded = String.trim(value)
               |> Base.decode64!()
     {name, decoded}
@@ -20,7 +20,7 @@ defmodule  LDIF.Import.Ingest do
     {name, data}
   end
 
-  def attribute(name, value, opts) do
+  def attribute(name, value, _opts) do
     {name, value}
   end
 
@@ -45,12 +45,12 @@ defmodule  LDIF.Import.Ingest do
     end
   end
 
-  defp read_external(value, opts) do
+  defp read_external(value, _opts) do
     raise "LDIF specified an remote file using an unsupported URI scheme: #{value}"
   end
 
   @spec http_options(extra_options :: keyword()) :: keyword()
-  defp http_options(extra_options \\ []) do
+  defp http_options(extra_options) do
     Keyword.merge(
       [
         headers: %{

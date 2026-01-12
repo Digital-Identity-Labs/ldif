@@ -18,7 +18,7 @@ defmodule LDIF.Modify do
 
   def new(dn, changes) do
     changes = Map.delete(changes, "dn") |> Map.delete("changetype")
-    {modification, [attribute | _]} = Enum.find(changes, fn {k, v} -> k in @modifications end)
+    {modification, [attribute | _]} = Enum.find(changes, fn {k, _v} -> k in @modifications end)
     values = Map.get(changes, attribute, nil)
     %Modify{dn: dn, modification: String.to_atom(modification), attribute: attribute, values: values}
   end
@@ -42,7 +42,7 @@ defmodule LDIF.Modify do
   def modify(%{modification: :add} = change, entry) do
     old = Map.get(entry.attributes, "#{change.attribute}", [])
     new = Map.get(change, :values, [])
-    values = List.uniq(old ++ new)
+    values = Enum.uniq(old ++ new)
 
     %{entry | attributes: Map.put(entry.attributes, "#{change.attribute}", values)}
   end
@@ -55,7 +55,7 @@ defmodule LDIF.Modify do
     end
   end
 
-  def modify(%{modification: other} = change, entry) do
+  def modify(%{modification: other}, entry) do
     raise "Unknown modification type #{other} for #{entry.dn}"
   end
 

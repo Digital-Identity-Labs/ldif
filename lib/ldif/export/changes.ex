@@ -1,8 +1,8 @@
 defmodule  LDIF.Export.Changes do
 
-  alias LDIF.Entry
+  #alias LDIF.Entry
 
-  def export(changes, opts) do
+  def export(_changes, _opts) do
     "Not implemented yet"
   end
 

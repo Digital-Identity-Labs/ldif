@@ -37,7 +37,7 @@ defmodule  LDIF.Import.Transform do
 
   defp reject_attrs(entry, attrs) do
     entry
-    |> Enum.reject(fn {k, v} -> k in attrs end)
+    |> Enum.reject(fn {k, _v} -> k in attrs end)
   end
 
   defp single_values(entry, nowt) when is_nil(nowt) or nowt == [] do

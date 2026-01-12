@@ -6,11 +6,11 @@ defmodule  LDIF.Import.Record do
     |> String.splitter("\n\n", trim: true)
   end
 
-  def unfold(record_text, opts) do
+  def unfold(record_text, _opts) do
     String.replace(record_text, ~r/(\n\s+)/, "", global: true)
   end
 
-  def split(record_text, opts) do
+  def split(record_text, _opts) do
     record_text
     |> String.trim()
     |> String.split("\n")

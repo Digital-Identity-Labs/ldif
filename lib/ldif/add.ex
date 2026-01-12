@@ -5,7 +5,6 @@ defmodule LDIF.Add do
 
   alias __MODULE__
   alias LDIF.Entry
-  alias LDIF.DNUtils
 
   #@derive Jason.Encoder
   defstruct [
@@ -22,7 +21,7 @@ defmodule LDIF.Add do
     Entry.new(change.dn, change.attributes)
   end
 
-  def apply(change, entry) do
+  def apply(_change, _entry) do
     raise "Cannot add to an existing entry!"
   end
 

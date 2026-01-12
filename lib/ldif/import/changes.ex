@@ -4,7 +4,6 @@ defmodule  LDIF.Import.Changes do
   alias LDIF.Modify
   alias LDIF.Delete
   alias LDIF.ModDN
-  alias LDIF.ModRDN
   alias LDIF.Import.Record
   alias LDIF.Import.Ingest
   alias LDIF.Import.Transform
@@ -36,19 +35,19 @@ defmodule  LDIF.Import.Changes do
        )
   end
 
-  def join(map, opts) when is_map(map) do
+  def join(map, _opts) when is_map(map) do
     map
   end
 
-  def join(parts, opts) when is_list(parts) do
+  def join(parts, _opts) when is_list(parts) do
 
     map = parts
           |> Enum.reject(&is_nil/1)
-          |> Enum.group_by(fn {n, v} -> n end, fn {n, v} -> v end)
+          |> Enum.group_by(fn {n, _v} -> n end, fn {_n, v} -> v end)
     Map.put(map, "dn", List.first(Map.get(map, "dn")))
   end
 
-  def normalize(map, opts) when is_map(map)do
+  def normalize(map, _opts) when is_map(map)do
     map
   end
 
@@ -57,15 +56,15 @@ defmodule  LDIF.Import.Changes do
     |> normalize(opts)
   end
 
-  def split_changes(items, opts) do
+  def split_changes(items, _opts) do
     items
     |> Enum.chunk_by(fn row -> row == ["-"] end)
     |> Enum.reject(fn row -> row == [["-"]] end)
   end
 
-  def standalone_changes(changes, opts) do
+  def standalone_changes(changes, _opts) do
     [["dn", dn] | _] = List.first(changes)
-    ["changetype", changetype] = Enum.find(List.first(changes), fn [k, v] -> k == "changetype"  end)
+    ["changetype", changetype] = Enum.find(List.first(changes), fn [k, _v] -> k == "changetype"  end)
     Enum.map(changes, fn change -> List.insert_at(change, 0, ["dn", dn]) |> List.insert_at(1, ["changetype", changetype]) end)
 
   end

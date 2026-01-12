@@ -29,25 +29,23 @@ defmodule  LDIF.Import.Entries do
     |> normalize(opts)
   end
 
-  defp join(map, opts) when is_map(map) do
+  defp join(map, _opts) when is_map(map) do
     map
   end
 
-  defp join(parts, opts) when is_list(parts) do
-
-    Apex.ap(parts)
+  defp join(parts, _opts) when is_list(parts) do
 
     map = parts
           |> Enum.reject(&is_nil/1)
-          |> Enum.group_by(fn {n, v} -> n end, fn {n, v} -> v end)
+          |> Enum.group_by(fn {n, _v} -> n end, fn {_n, v} -> v end)
     Map.put(map, "dn", List.first(Map.get(map, "dn")))
   end
 
-  defp normalize(map, opts) when is_map(map)do
+  defp normalize(map, _opts) when is_map(map)do
     map
   end
 
-  defp normalize(list, opts) do
+  defp normalize(list, _opts) do
     Map.new(list)
   end
 
