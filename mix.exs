@@ -23,6 +23,7 @@ defmodule Ldif.MixProject do
     [
       {:req, "~> 0.5"},
       {:curl_req, "~> 0.98.0"},
+      {:recase, "~> 0.9"},
 
       {:apex, "~> 1.2", only: [:dev, :test], runtime: false},
       {:credo, "~> 1.7", only: [:dev, :test], runtime: false},

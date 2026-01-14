@@ -5,6 +5,7 @@ defmodule LDIF.Entry do
 
   alias __MODULE__
   alias LDIF.DNUtils
+  alias LDIF.AttrMapper
 
   #@derive Jason.Encoder
   defstruct [
@@ -53,6 +54,10 @@ defmodule LDIF.Entry do
 
   def replace(entry, attribute, values) do
     %{entry | attributes: Map.put(entry.attributes, attribute, values)}
+  end
+
+  def to_map(entry, opts \\ []) do
+    AttrMapper.entry_to_map(entry, opts)
   end
 
   defp normlist(list) do
