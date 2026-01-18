@@ -3,7 +3,7 @@ defmodule LDIF.AttrMapper do
   require Logger
 
   @attr_map %{
-    "c" => :c,
+    "c" => :country,
     "carLicense" => :car_license,
     "cn" => :cn,
     "objectClass" => :object_class,
@@ -21,7 +21,6 @@ defmodule LDIF.AttrMapper do
     "eduPersonPrimaryOrgUnitDN" => :edu_person_org_unit_dn,
     "eduPersonPrincipalName" => :edu_person_principal_name,
     "eduPersonScopedAffiliation" => :edu_person_scoped_affiliation,
-    "eduPersonAffiliation" => :edu_person_affiliation,
     "employeeNumber" => :employee_number,
     "employeeType" => :employee_type,
     "givenName" => :given_name,
@@ -55,6 +54,10 @@ defmodule LDIF.AttrMapper do
     |> Map.new()
     |> Map.put(:dn, entry.dn)
 
+  end
+
+  def default_attribute_map() do
+    @attr_map
   end
 
   defp to_sca(key, opts) do
