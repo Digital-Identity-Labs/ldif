@@ -49,7 +49,13 @@ defmodule LDIF.Modify do
 
   def modify(%{modification: :delete} = change, entry) do
     if Map.get(entry.attributes, "#{change.attribute}", false) do
-      %{entry | attributes: Map.delete(entry.attributes, "#{change.attribute}")}
+      if change.values do
+        old_values = entry.attributes["#{change.attribute}"] || []
+        new_values = Enum.reject(old_values, fn v -> v in change.values end)
+        %{entry | attributes: %{entry.attributes | "#{change.attribute}" => new_values}}
+        else
+          %{entry | attributes: Map.delete(entry.attributes, "#{change.attribute}")}
+      end
     else
       raise "Entry #{entry.dn} does not have a #{change.attribute} to delete!"
     end
