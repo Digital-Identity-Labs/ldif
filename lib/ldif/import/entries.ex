@@ -18,7 +18,6 @@ defmodule  LDIF.Import.Entries do
     text
     |> Record.unfold(opts)
     |> Record.split(opts)
-    |> Apex.ap()
     |> Enum.map(fn
       [name, value] -> Ingest.attribute(name, value, opts)
       other -> raise "Cannot parse line '#{other}' in LDIF!"
