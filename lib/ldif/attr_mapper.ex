@@ -4,47 +4,47 @@ defmodule LDIF.AttrMapper do
 
   @attr_map %{
     "c" => :country,
-    "carLicense" => :car_license,
+    "carlicense" => :car_license,
     "cn" => :cn,
-    "objectClass" => :object_class,
     "objectclass" => :object_class,
-    "departmentNumber" => :department_number,
+    "objectclass" => :object_class,
+    "departmentnumber" => :department_number,
+    "departmentnumber" => :department_number,
     "description" => :description,
-    "displayName" => :display_name,
-    "eduPersonAffiliation" => :edu_person_affiliation,
-    "eduPersonDisplayPronouns" => :edu_person_display_pronouns,
-    "eduPersonEntitlement" => :edu_person_entitlement,
-    "eduPersonOrcid" => :edu_person_orcid,
-    "eduPersonOrgDN" => :edu_person_org_dn,
-    "eduPersonOrgUnitDN" => :edu_person_org_unit_dn,
-    "eduPersonPrimaryAffiliation" => :edu_person_primary_affiliation,
-    "eduPersonPrimaryOrgUnitDN" => :edu_person_org_unit_dn,
-    "eduPersonPrincipalName" => :edu_person_principal_name,
-    "eduPersonScopedAffiliation" => :edu_person_scoped_affiliation,
-    "employeeNumber" => :employee_number,
-    "employeeType" => :employee_type,
-    "givenName" => :given_name,
+    "displayname" => :display_name,
+    "edupersonaffiliation" => :edu_person_affiliation,
+    "edupersondisplaypronouns" => :edu_person_display_pronouns,
+    "edupersonentitlement" => :edu_person_entitlement,
+    "edupersonorcid" => :edu_person_orcid,
+    "edupersonorgdn" => :edu_person_org_dn,
+    "edupersonorgunitdn" => :edu_person_org_unit_dn,
+    "edupersonprimaryaffiliation" => :edu_person_primary_affiliation,
+    "edupersonprimaryorgunitdn" => :edu_person_org_unit_dn,
+    "edupersonprincipalname" => :edu_person_principal_name,
+    "edupersonscopedaffiliation" => :edu_person_scoped_affiliation,
+    "employeenumber" => :employee_number,
+    "employeetype" => :employee_type,
+    "givenname" => :given_name,
     "initials" => :initials,
     "l" => :location,
-    "labeledURI" => :labeled_uri,
+    "labeleduri" => :labeled_uri,
     "mail" => :mail,
-    "memberOf" => :member_of,
+    "memberof" => :member_of,
     "mobile" => :mobile,
     "o" => :org,
     "ou" => :org_unit,
-    "personalTitle" => :personal_title,
-    "postalAddress" => :postal_address,
-    "preferredLanguage" => :preferred_language,
-    "roomNumber" => :room_number,
-    "schacHomeOrganization" => :schac_home_organization,
-    "schacHomeOrganizationType" => :schac_home_organization_type,
-    "sshPublicKey" => :ssh_public_key,
+    "personaltitle" => :personal_title,
+    "postaladdress" => :postal_address,
+    "preferredlanguage" => :preferred_language,
+    "roomnumber" => :room_number,
+    "schachomeorganization" => :schac_home_organization,
+    "schachomeorganizationtype" => :schac_home_organization_type,
+    "sshpublickey" => :ssh_public_key,
     "sn" => :surname,
-    "telephoneNumber" => :telephone_number,
     "telephonenumber" => :telephone_number,
     "title" => :title,
     "uid" => :username,
-    "uidNumber" => :uid_number
+    "uidnumber" => :uid_number
   }
 
   def entry_to_map(entry, opts \\ []) do
@@ -63,10 +63,10 @@ defmodule LDIF.AttrMapper do
   defp to_sca(key, opts) do
     mapper = opts[:attr_map] || @attr_map
     try do
-      Map.get(mapper, key, nil) || String.to_existing_atom(Recase.to_snake(key))
+      Map.get(mapper, String.downcase(key), nil) || String.to_existing_atom(Recase.to_snake(key))
     rescue
       _oops ->
-        Logger.warning ("Attribute's snake-case name '#{key}' is not already an existing atom, dropping attribute!")
+        Logger.warning ("Attribute's snake-case name derived from '#{key}' is not already an existing atom, dropping attribute!")
         nil
     end
   end
