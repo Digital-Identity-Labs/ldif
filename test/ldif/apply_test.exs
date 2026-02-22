@@ -3,16 +3,42 @@ defmodule ApplyTest do
 
   alias LDIF.Apply
 
-#  describe "new/2" do
-#    test "returns struct" do
-#      assert "cccc" = Apply.new("", %{})
+  describe "apply/1" do
+
+#    test "applies a single change to an entry, and returns a list with one or more entries" do
+##      change =
+##      assert [] = Apply.apply(change, entry)
 #    end
-#  end
 #
-#  describe "apply/2" do
-#    test "returns struct" do
-#      assert "cccc" = Apply.apply(change, entry)
+#    test "applies a list of changes to an entry, and returns a list of entries" do
+#
 #    end
-#  end
+#
+#    test "applies a list of changes to a list of entries, and returns a list of entries" do
+#
+#    end
+#
+#    test "entries can be added" do
+#
+#    end
+#
+#    test "values can be replaced" do
+#
+#    end
+#
+#    test "entries can be deleted" do
+#
+#    end
+#
+#    test "DNs can be changed" do
+#
+#    end
+
+  end
+
+  #######################################
+
+
+
 
 end
