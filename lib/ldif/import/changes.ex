@@ -15,7 +15,9 @@ defmodule  LDIF.Import.Changes do
     |> Stream.flat_map(fn changes -> Enum.map(changes, fn map -> to_struct(map["dn"], map) end) end)
   end
 
-  def ingest(text, opts) do
+  ###############################
+
+  defp ingest(text, opts) do
     text
     |> Record.unfold(opts)
     |> Record.split(opts)
@@ -35,11 +37,11 @@ defmodule  LDIF.Import.Changes do
        )
   end
 
-  def join(map, _opts) when is_map(map) do
+  defp join(map, _opts) when is_map(map) do
     map
   end
 
-  def join(parts, _opts) when is_list(parts) do
+  defp join(parts, _opts) when is_list(parts) do
 
     map = parts
           |> Enum.reject(&is_nil/1)
@@ -47,29 +49,29 @@ defmodule  LDIF.Import.Changes do
     Map.put(map, "dn", List.first(Map.get(map, "dn")))
   end
 
-  def normalize(map, _opts) when is_map(map)do
+  defp normalize(map, _opts) when is_map(map)do
     map
   end
 
-  def normalize(list, opts) do
+  defp normalize(list, opts) do
     Map.new(list)
     |> normalize(opts)
   end
 
-  def split_changes(items, _opts) do
+  defp split_changes(items, _opts) do
     items
     |> Enum.chunk_by(fn row -> row == ["-"] end)
     |> Enum.reject(fn row -> row == [["-"]] end)
   end
 
-  def standalone_changes(changes, _opts) do
+  defp standalone_changes(changes, _opts) do
     [["dn", dn] | _] = List.first(changes)
     ["changetype", changetype] = Enum.find(List.first(changes), fn [k, _v] -> k == "changetype"  end)
     Enum.map(changes, fn change -> List.insert_at(change, 0, ["dn", dn]) |> List.insert_at(1, ["changetype", changetype]) end)
 
   end
 
-  def to_struct(dn, data) do
+  defp to_struct(dn, data) do
     type = List.first(data["changetype"])
     case type do
       "modify" -> Modify.new(dn, data)
