@@ -2,7 +2,7 @@ defmodule  LDIF.Import.Transform do
 
   alias LDIF.DNUtils
 
-  def attributes(map, opts) do
+  def attributes(map, opts \\ []) do
     map
     |> Enum.reject(&is_nil/1)
     |> language_tags(opts[:lang_tags])
@@ -11,9 +11,10 @@ defmodule  LDIF.Import.Transform do
     |> normalize_dns(opts[:normalize_dns])
   end
 
-  def entry(map, opts) do
+  def entry(map, opts \\ []) do
     map
     |> single_values(opts[:single_value])
+    |> Map.new()
   end
 
   #################################
