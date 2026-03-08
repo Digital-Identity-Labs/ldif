@@ -7,7 +7,6 @@ defmodule LDIF.AttrMapper do
     "carlicense" => :car_license,
     "cn" => :cn,
     "objectclass" => :object_class,
-    "objectClass" => :object_class,
     "departmentnumber" => :department_number,
     "departmentNumber" => :department_number,
     "description" => :description,
@@ -53,7 +52,6 @@ defmodule LDIF.AttrMapper do
     |> Enum.reject(fn {k, _} -> is_nil(k) end)
     |> Map.new()
     |> Map.put(:dn, entry.dn)
-
   end
 
   def default_attribute_map() do
