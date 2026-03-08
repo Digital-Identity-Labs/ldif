@@ -8,7 +8,7 @@ defmodule  LDIF.Import.Changes do
   alias LDIF.Import.Ingest
   alias LDIF.Import.Transform
 
-  def import(ldif, opts) do
+  def import(ldif, opts \\ []) do
     ldif
     |> Record.stream()
     |> Stream.map(fn entry_text -> ingest(entry_text, opts) end)
