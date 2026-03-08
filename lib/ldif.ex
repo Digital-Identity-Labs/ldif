@@ -4,6 +4,10 @@ defmodule LDIF do
   """
 
   alias LDIF.Entry
+  alias LDIF.Add
+  alias LDIF.Modify
+  alias LDIF.Delete
+  alias LDIF.ModDN
   alias LDIF.Import
   alias LDIF.Apply
 
@@ -22,25 +26,41 @@ defmodule LDIF do
     Entry.new(dn, attributes)
   end
 
-  def change(dn, attributes) do
-    Entry.new(dn, attributes)
+  def change(dn, :add, attributes) do
+    Add.new(dn, attributes)
   end
 
-  def list_entries(ldif, opts \\ []) do
-    stream_entries(ldif, opts)
+  def change(dn, :modify, attributes) do
+    Modify.new(dn, attributes)
+  end
+
+  def change(dn, :delete, attributes) do
+    Delete.new(dn, attributes)
+  end
+
+  def change(dn, :mod_dn, attributes) do
+    ModDN.new(dn, attributes)
+  end
+
+  def change(_, type, _) do
+    raise "Unknown change type '#{type}'. Available change types are :add, :modify, :delete and :mod_dn"
+  end
+
+  def decode_entries!(ldif, opts \\ []) do
+    stream_entries!(ldif, opts)
     |> Enum.to_list()
   end
 
-  def list_changes(ldif, opts \\ []) do
-    stream_changes(ldif, opts)
+  def decode_changes!(ldif, opts \\ []) do
+    stream_changes!(ldif, opts)
     |> Enum.to_list()
   end
 
-  def stream_entries(ldif, opts \\ []) do
+  def stream_entries!(ldif, opts \\ []) do
     Import.entries(ldif, Keyword.merge(@default_import_opts, opts))
   end
 
-  def stream_changes(ldif, opts \\ []) do
+  def stream_changes!(ldif, opts \\ []) do
     Import.changes(ldif, Keyword.merge(@default_import_opts, opts))
   end
 

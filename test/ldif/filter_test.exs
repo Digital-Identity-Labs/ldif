@@ -5,10 +5,10 @@ defmodule FilterTest do
   alias LDIF.Entry
 
   @entries File.read!("test/support/rfc_jensen_entries.ldif")
-           |> LDIF.list_entries(ext_http: true, normalize_dns: true)
+           |> LDIF.decode_entries!(ext_http: true, normalize_dns: true)
 
   @changes File.read!("test/support/rfc_jensen_changes.ldif")
-           |> LDIF.list_changes(normalize_dns: true)
+           |> LDIF.decode_changes!(normalize_dns: true)
 
   describe "objectclass/1" do
 
