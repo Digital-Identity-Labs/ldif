@@ -49,7 +49,7 @@ defmodule ImportRecordTest do
       objectclass:top
       objectclass:person
       description:Babs is a big sailing fan, and travels extensively in sea
-        rch of perfect sailing conditions.
+        rch of perfect sailing conditions. 
         This is an extra sentence.
       """
 
