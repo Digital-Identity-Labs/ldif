@@ -25,7 +25,6 @@ defmodule  LDIF.Import.Entries do
     |> Transform.attributes(opts)
     |> join(opts)
     |> Transform.entry(opts)
-    |> normalize(opts)
   end
 
   defp join(map, _opts) when is_map(map) do
@@ -38,14 +37,6 @@ defmodule  LDIF.Import.Entries do
           |> Enum.reject(&is_nil/1)
           |> Enum.group_by(fn {n, _v} -> n end, fn {_n, v} -> v end)
     Map.put(map, "dn", List.first(Map.get(map, "dn")))
-  end
-
-  defp normalize(map, _opts) when is_map(map)do
-    map
-  end
-
-  defp normalize(list, _opts) do
-    Map.new(list)
   end
 
 
