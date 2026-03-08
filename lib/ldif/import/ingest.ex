@@ -36,7 +36,7 @@ defmodule  LDIF.Import.Ingest do
   defp read_external("http" <> _ = value, opts) do
     if opts[:ext_http] == true do
       Req.get!(value).body
-      Req.new(http_options(opts[:http]))
+      Req.new(http_options(opts[:http] || []))
       |> CurlReq.Plugin.attach()
       |> Req.get!(url: value)
       |> Map.get(:body)
