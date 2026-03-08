@@ -22,30 +22,6 @@ defmodule LDIF do
     http: []
   ]
 
-  def entry(dn, attributes) do
-    Entry.new(dn, attributes)
-  end
-
-  def change(dn, :add, attributes) do
-    Add.new(dn, attributes)
-  end
-
-  def change(dn, :modify, attributes) do
-    Modify.new(dn, attributes)
-  end
-
-  def change(dn, :delete, attributes) do
-    Delete.new(dn, attributes)
-  end
-
-  def change(dn, :mod_dn, attributes) do
-    ModDN.new(dn, attributes)
-  end
-
-  def change(_, type, _) do
-    raise "Unknown change type '#{type}'. Available change types are :add, :modify, :delete and :mod_dn"
-  end
-
   def decode_entries!(ldif, opts \\ []) do
     stream_entries!(ldif, opts)
     |> Enum.to_list()
@@ -68,4 +44,28 @@ defmodule LDIF do
     Apply.apply(changes, entries)
   end
 
+  #  def entry(dn, attributes) do
+  #    Entry.new(dn, attributes)
+  #  end
+  #
+  #  def change(dn, :add, attributes) do
+  #    Add.new(dn, attributes)
+  #  end
+  #
+  #  def change(dn, :modify, attributes) do
+  #    Modify.new(dn, attributes)
+  #  end
+  #
+  #  def change(dn, :delete, attributes) do
+  #    Delete.new(dn, attributes)
+  #  end
+  #
+  #  def change(dn, :mod_dn, attributes) do
+  #    ModDN.new(dn, attributes)
+  #  end
+  #
+  #  def change(_, type, _) do
+  #    raise "Unknown change type '#{type}'. Available change types are :add, :modify, :delete and :mod_dn"
+  #  end
+  
 end
