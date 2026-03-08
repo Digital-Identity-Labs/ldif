@@ -34,6 +34,14 @@ defmodule LDIF.Entry do
     entry.attributes || %{}
   end
 
+  def attribute(entry, attribute) do
+    attributes(entry)[attribute] || [] 
+  end
+
+  def get(entry, attribute) do
+    attributes(entry)[attribute] 
+  end
+  
   def add(entry, attribute, values) do
     old = Map.get(entry.attributes, attribute, [])
     %{entry | attributes: Map.put(entry.attributes, attribute, normlist(old ++ List.wrap(values)))}
