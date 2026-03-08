@@ -569,12 +569,12 @@ defmodule ImportTest do
         sn: Jensen
         uid: fiona
         telephonenumber: +1 408 555 1212
-        description: This is some text to test that line unwrapping happens for change 
+        description: This is some text to test that line unwrapping happens for change-
           records too, because you can never be too careful with this sort of thing.
         """
 
       assert [
-               "This is some text to test that line unwrapping happens for change records too, because you can never be too careful with this sort of thing."
+               "This is some text to test that line unwrapping happens for change-records too, because you can never be too careful with this sort of thing."
              ] = Import.changes(text)
                  |> Enum.to_list()
                  |> List.first()
