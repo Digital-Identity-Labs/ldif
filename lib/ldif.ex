@@ -19,7 +19,8 @@ defmodule LDIF do
     reject: [],
     redact: [],
     normalize_dns: false,
-    http: []
+    http: [],
+    one: false
   ]
 
   def decode_entries!(ldif, opts \\ []) do
