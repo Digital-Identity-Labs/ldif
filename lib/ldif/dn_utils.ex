@@ -10,14 +10,20 @@ defmodule  LDIF.DNUtils do
    |> String.replace(~r/\s*=\s*/, "=", global: true)
   end
 
-  def rdn(dn) do
+  def nrdn(dn) do
     normalize_dn(dn)
     |> String.split(",")
     |> List.first()
   end
 
+  def rdn(dn) do
+    String.trim(dn)
+    |> String.split(",")
+    |> List.first()
+  end
+  
   def superior(dn) do
-    String.replace_leading(normalize_dn(dn), "#{rdn(dn)},", "")
+    String.replace_leading(normalize_dn(dn), "#{nrdn(dn)},", "")
   end
 
   def add_rdn(dn, rdn) do

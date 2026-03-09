@@ -4,6 +4,7 @@ defmodule DNUtilsTest do
 
   alias LDIF.DNUtils
 
+  @dn "cn=Barbara Jensen, ou=Product Development, dc=airius, dc=com"
   @shoddy_dn " UID = JOHN.DOE , OU = PEOPLE , DC = EXAMPLE , DC = COM"
 
   describe "normalize_dn/1" do
@@ -14,7 +15,13 @@ defmodule DNUtilsTest do
 
   describe "rdn/1" do
     test "returns the normalized RDN from a DN" do
-      assert "uid=john.doe" = DNUtils.rdn(@shoddy_dn)
+      assert "cn=Barbara Jensen" = DNUtils.rdn(@dn)
+    end
+  end
+  
+  describe "nrdn/1" do
+    test "returns the normalized RDN from a DN" do
+      assert "uid=john.doe" = DNUtils.nrdn(@shoddy_dn)
     end
   end
 
