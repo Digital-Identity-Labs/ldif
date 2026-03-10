@@ -4,10 +4,18 @@ defmodule  LDIF.DNUtils do
   """
 
   def normalize_dn(dn) do
-   String.trim(dn)
-   |> String.downcase()
-   |> String.replace(~r/\s*,\s*/, ",", global: true)
-   |> String.replace(~r/\s*=\s*/, "=", global: true)
+    String.trim(dn)
+    |> String.downcase()
+    |> String.replace(~r/\s*,\s*/, ",", global: true)
+    |> String.replace(~r/\s*=\s*/, "=", global: true)
+  end
+
+  def normalized?(dn) do
+    cond do
+      String.contains?(dn, ", ") -> false
+      String.downcase(dn) != dn -> false
+      true -> true
+    end
   end
 
   def nrdn(dn) do
@@ -21,13 +29,20 @@ defmodule  LDIF.DNUtils do
     |> String.split(",")
     |> List.first()
   end
-  
+
   def superior(dn) do
-    String.replace_leading(normalize_dn(dn), "#{nrdn(dn)},", "")
+    String.trim(dn)
+    |> String.split(",", parts: 2)
+    |> Enum.at(1)
+    |> String.trim()
   end
 
   def add_rdn(dn, rdn) do
-    Enum.join([rdn, dn], ",") |> normalize_dn()
+    if normalized?(dn) do
+      Enum.join([String.trim_trailing(rdn), String.trim_leading(dn)], ",")
+    else
+      Enum.join([String.trim_trailing(rdn), String.trim_leading(dn)], ", ")
+    end
   end
 
   def replace_rdn(dn, rdn) do
@@ -35,7 +50,11 @@ defmodule  LDIF.DNUtils do
   end
 
   def replace_superior(dn, sdn) do
-    add_rdn(sdn, rdn(dn))
+    if normalized?(dn) do
+      add_rdn(sdn, nrdn(dn))
+    else
+      add_rdn(sdn, rdn(dn))
+    end
   end
 
   def descendent_of?(dn1, dn2) do # ??

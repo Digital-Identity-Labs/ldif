@@ -51,19 +51,19 @@ defmodule ModDNTest do
 
         test "returns an entry with an adjusted rdn if set to do so" do
           change = %ModDN{dn: @dn, newrdn: "ou=Product Development Accountants"}
-          assert %Entry{dn: "ou=product development accountants,ou=product development,dc=airius,dc=com"} = ModDN.apply(change, %Entry{dn: @dn})
+          assert %Entry{dn: "ou=Product Development Accountants, ou=Product Development, dc=airius, dc=com"} = ModDN.apply(change, %Entry{dn: @dn})
         end
 
         test "returns an entry with an adjusted superior if set to do so" do
           change = %ModDN{dn: @dn, newsuperior: "ou=Accounting, dc=airius, dc=com"}
-          assert %Entry{dn: "ou=pd accountants,ou=accounting,dc=airius,dc=com"} = ModDN.apply(change, %Entry{dn: @dn})
+          assert %Entry{dn: "ou=PD Accountants, ou=Accounting, dc=airius, dc=com"} = ModDN.apply(change, %Entry{dn: @dn})
 
         end
 
         test "returns an adjusted entry and the original in a list if set to do so" do
           change = %ModDN{dn: @dn, newrdn: "ou=Product Development Accountants", deleteoldrdn: false}
           assert [
-          %Entry{dn: "ou=product development accountants,ou=product development,dc=airius,dc=com"},
+          %Entry{dn: "ou=Product Development Accountants, ou=Product Development, dc=airius, dc=com"},
           %Entry{dn: @dn},
           ] = ModDN.apply(change, %Entry{dn: @dn})
 
@@ -71,7 +71,7 @@ defmodule ModDNTest do
 
         test "both rnd and superior can be changed together" do
           change = %ModDN{dn: @dn, newrdn: "ou=Product Development Accountants", newsuperior: "ou=Accounting, dc=airius, dc=com"}
-          assert %Entry{dn: "ou=product development accountants,ou=accounting,dc=airius,dc=com"} = ModDN.apply(change, %Entry{dn: @dn})
+          assert %Entry{dn: "ou=Product Development Accountants, ou=Accounting, dc=airius, dc=com"} = ModDN.apply(change, %Entry{dn: @dn})
 
         end
 

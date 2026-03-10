@@ -2,12 +2,7 @@ defmodule LDIF do
   @moduledoc """
   Documentation for `LDIF`.
   """
-
-  alias LDIF.Entry
-  alias LDIF.Add
-  alias LDIF.Modify
-  alias LDIF.Delete
-  alias LDIF.ModDN
+  
   alias LDIF.Import
   alias LDIF.Apply
 

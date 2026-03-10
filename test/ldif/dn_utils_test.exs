@@ -5,6 +5,7 @@ defmodule DNUtilsTest do
   alias LDIF.DNUtils
 
   @dn "cn=Barbara Jensen, ou=Product Development, dc=airius, dc=com"
+  @ndn "cn=barbara jensen,ou=product development,dc=airius,dc=com"
   @shoddy_dn " UID = JOHN.DOE , OU = PEOPLE , DC = EXAMPLE , DC = COM"
 
   describe "normalize_dn/1" do
@@ -27,25 +28,33 @@ defmodule DNUtilsTest do
 
   describe "superior/1" do
     test "returns the normalized superior DN from a DN" do
-      assert "ou=people,dc=example,dc=com" = DNUtils.superior(@shoddy_dn)
+      assert "OU = PEOPLE , DC = EXAMPLE , DC = COM" = DNUtils.superior(@shoddy_dn)
+      assert "ou=Product Development, dc=airius, dc=com" = DNUtils.superior(@dn)
+      assert "ou=product development,dc=airius,dc=com" = DNUtils.superior(@ndn)
     end
   end
 
   describe "add_rdn/1" do
     test "returns a DN extended with an additional RDN" do
-      assert "uid=johnbot,uid=john.doe,ou=people,dc=example,dc=com" = DNUtils.add_rdn(@shoddy_dn, "uid=johnbot")
+      assert "uid=johnbot, UID = JOHN.DOE , OU = PEOPLE , DC = EXAMPLE , DC = COM" = DNUtils.add_rdn(@shoddy_dn, "uid=johnbot")
     end
   end
 
   describe "replace_rdn/1" do
     test "returns a DN with the RDN replaced by a new RDN" do
-      assert "uid=bob,ou=people,dc=example,dc=com" = DNUtils.replace_rdn(@shoddy_dn, "uid=bob")
+      assert "uid=bob, OU = PEOPLE , DC = EXAMPLE , DC = COM" = DNUtils.replace_rdn(@shoddy_dn, "uid=bob")
+      assert "uid=bob, ou=Product Development, dc=airius, dc=com" = DNUtils.replace_rdn(@dn, "uid=bob")
+      assert "uid=bob,ou=product development,dc=airius,dc=com" = DNUtils.replace_rdn(@ndn, "uid=bob")
     end
   end
 
   describe "replace_superior/1" do
     test "returns " do
-      assert "uid=john.doe,ou=staff,dc=example,dc=com" = DNUtils.replace_superior(@shoddy_dn, "ou=staff,dc=example,dc=com")
+      assert "UID = JOHN.DOE,ou=staff,dc=example,dc=com" = DNUtils.replace_superior(@shoddy_dn, "ou=staff,dc=example,dc=com")
+      assert "cn=Barbara Jensen,ou=staff,dc=example,dc=com" = DNUtils.replace_superior(@dn, "ou=staff,dc=example,dc=com")
+      assert "cn=barbara jensen,ou=staff,dc=example,dc=com" = DNUtils.replace_superior(@ndn, "ou=staff,dc=example,dc=com")
+      assert "cn=barbara jensen, ou=staff, dc=example, dc=com" = DNUtils.replace_superior(@ndn, "ou=staff, dc=example, dc=com")
+      
     end
   end
 
