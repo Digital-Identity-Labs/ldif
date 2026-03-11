@@ -23,7 +23,7 @@ defmodule LDIF.Modify do
     %Modify{dn: dn, modification: String.to_atom(modification), attribute: attribute, values: values}
   end
 
-  def apply(change, entry) do
+  def apply_to(change, entry) do
     if DNUtils.normalize_dn(change.dn) == DNUtils.normalize_dn(entry.dn) do
       [modify(change, entry)]
     else
@@ -67,7 +67,7 @@ defmodule LDIF.Modify do
 
   defimpl LDIF.Change, for: LDIF.Modify do
     def apply_to_entry(change, entry) do
-      Modify.apply(change, entry)
+      Modify.apply_to(change, entry)
     end
   end
 

@@ -40,21 +40,21 @@ defmodule ModDNTest do
 
   end
   
-  describe "apply/2" do
+  describe "apply_to/2" do
 
         test "returns the Entry unchanged if the passed entry does not match the DN" do
           change = ModDN.new("cn=Bob Jensen, ou=Marketing, dc=airius, dc=com", @changes)
-          assert [%Entry{dn: @dn}] = ModDN.apply(change, %Entry{dn: @dn})
+          assert [%Entry{dn: @dn}] = ModDN.apply_to(change, %Entry{dn: @dn})
         end
 
         test "returns an entry with an adjusted rdn if set to do so" do
           change = %ModDN{dn: @dn, newrdn: "ou=Product Development Accountants"}
-          assert [%Entry{dn: "ou=Product Development Accountants, ou=Product Development, dc=airius, dc=com"}] = ModDN.apply(change, %Entry{dn: @dn})
+          assert [%Entry{dn: "ou=Product Development Accountants, ou=Product Development, dc=airius, dc=com"}] = ModDN.apply_to(change, %Entry{dn: @dn})
         end
 
         test "returns an entry with an adjusted superior if set to do so" do
           change = %ModDN{dn: @dn, newsuperior: "ou=Accounting, dc=airius, dc=com"}
-          assert [%Entry{dn: "ou=PD Accountants, ou=Accounting, dc=airius, dc=com"}] = ModDN.apply(change, %Entry{dn: @dn})
+          assert [%Entry{dn: "ou=PD Accountants, ou=Accounting, dc=airius, dc=com"}] = ModDN.apply_to(change, %Entry{dn: @dn})
 
         end
 
@@ -63,13 +63,13 @@ defmodule ModDNTest do
           assert [
           %Entry{dn: "ou=Product Development Accountants, ou=Product Development, dc=airius, dc=com"},
           %Entry{dn: @dn},
-          ] = ModDN.apply(change, %Entry{dn: @dn})
+          ] = ModDN.apply_to(change, %Entry{dn: @dn})
 
         end
 
         test "both rnd and superior can be changed together" do
           change = %ModDN{dn: @dn, newrdn: "ou=Product Development Accountants", newsuperior: "ou=Accounting, dc=airius, dc=com"}
-          assert [%Entry{dn: "ou=Product Development Accountants, ou=Accounting, dc=airius, dc=com"}] = ModDN.apply(change, %Entry{dn: @dn})
+          assert [%Entry{dn: "ou=Product Development Accountants, ou=Accounting, dc=airius, dc=com"}] = ModDN.apply_to(change, %Entry{dn: @dn})
 
         end
 

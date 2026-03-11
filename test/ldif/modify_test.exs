@@ -76,11 +76,11 @@ defmodule ModifyTest do
 
   end
 
-  describe "apply/2" do
+  describe "apply_to/2" do
 
     test "returns the Entry unchanged if the passed entry does not match the DN" do
       change = Modify.new("cn=Bob Jensen, ou=Marketing, dc=airius, dc=com", @changes_add)
-      assert [%Entry{dn: @dn}] = Modify.apply(change, %Entry{dn: @dn})
+      assert [%Entry{dn: @dn}] = Modify.apply_to(change, %Entry{dn: @dn})
     end
 
     test "can add additional values to an existing attribute" do
@@ -92,7 +92,7 @@ defmodule ModifyTest do
                      ["1 Everystreet $ Manchester, UK", "123 Anystreet $ Sunnyvale, CA $ 94086"]
                  }
                }
-             ] = Modify.apply(change, %Entry{dn: @dn, attributes: @attrs})
+             ] = Modify.apply_to(change, %Entry{dn: @dn, attributes: @attrs})
     end
 
     test "can add values to a missing attribute" do
@@ -104,13 +104,13 @@ defmodule ModifyTest do
                      ["123 Anystreet $ Sunnyvale, CA $ 94086"]
                  }
                }
-             ] = Modify.apply(change, %Entry{dn: @dn, attributes: Map.delete(@attrs, "postaladdress")})
+             ] = Modify.apply_to(change, %Entry{dn: @dn, attributes: Map.delete(@attrs, "postaladdress")})
     end
 
     test "can delete an entire attribute if it exists" do
       change = Modify.new(@dn, @changes_del1)
       refute Map.has_key?(
-               Modify.apply(change, %Entry{dn: @dn, attributes: @attrs})
+               Modify.apply_to(change, %Entry{dn: @dn, attributes: @attrs})
                |> List.first()
                |> Map.get(:attributes, %{}),
                "description"
@@ -120,7 +120,7 @@ defmodule ModifyTest do
     test "will error if asked to delete an attribute that does not exist" do
       assert_raise RuntimeError, fn ->
         change = Modify.new(@dn, @changes_del3)
-        Modify.apply(change, %Entry{dn: @dn, attributes: @attrs})
+        Modify.apply_to(change, %Entry{dn: @dn, attributes: @attrs})
       end
     end
 
@@ -132,13 +132,13 @@ defmodule ModifyTest do
                    "facsimiletelephonenumber" => ["+1 408 555 9877"]
                  }
                }
-             ] = Modify.apply(change, %Entry{dn: @dn, attributes: @attrs})
+             ] = Modify.apply_to(change, %Entry{dn: @dn, attributes: @attrs})
     end
 
     test "can remove an attribute that exists by giving it no values" do
       change = Modify.new(@dn, @changes_rep2)
       refute Map.has_key?(
-               List.first(Modify.apply(change, %Entry{dn: @dn, attributes: @attrs})).attributes,
+               List.first(Modify.apply_to(change, %Entry{dn: @dn, attributes: @attrs})).attributes,
                "telephonenumber"
              )
     end
@@ -146,7 +146,7 @@ defmodule ModifyTest do
     test "will not error when asked to remove an attribute that does not exist by giving it no values" do
       change = Modify.new(@dn, @changes_rep3)
       refute Map.has_key?(
-               List.first(Modify.apply(change, %Entry{dn: @dn, attributes: @attrs})).attributes,
+               List.first(Modify.apply_to(change, %Entry{dn: @dn, attributes: @attrs})).attributes,
                "inscription"
              )
     end
@@ -159,7 +159,7 @@ defmodule ModifyTest do
                    "telephonenumber" => ["+1 408 555 1234", "+1 408 555 5678"]
                  }
                }
-             ] = Modify.apply(change, %Entry{dn: @dn, attributes: @attrs})
+             ] = Modify.apply_to(change, %Entry{dn: @dn, attributes: @attrs})
     end
 
   end

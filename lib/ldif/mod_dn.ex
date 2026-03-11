@@ -26,7 +26,7 @@ defmodule LDIF.ModDN do
     %ModDN{dn: dn, newsuperior: newsuperior, deleteoldrdn: deleteoldrdn, newrdn: newrdn}
   end
 
-  def apply(change, entry) do
+  def apply_to(change, entry) do
     if DNUtils.normalize_dn(change.dn) == DNUtils.normalize_dn(entry.dn) do
 
       dn = change.dn
@@ -55,7 +55,7 @@ defmodule LDIF.ModDN do
 
   defimpl LDIF.Change, for: LDIF.ModDN do
     def apply_to_entry(change, entry) do
-      ModDN.apply(change, entry)
+      ModDN.apply_to(change, entry)
     end
   end
 

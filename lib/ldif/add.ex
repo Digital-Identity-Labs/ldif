@@ -17,17 +17,17 @@ defmodule LDIF.Add do
     %Add{dn: dn, attributes: changes}
   end
 
-  def apply(change, nil) do
+  def apply_to(change, nil) do
     [Entry.new(change.dn, change.attributes)]
   end
 
-  def apply(change, entry) do
-    Add.apply(change, nil) ++ [entry]
+  def apply_to(change, entry) do
+    Add.apply_to(change, nil) ++ [entry]
   end
 
   defimpl LDIF.Change, for: LDIF.Add do
     def apply_to_entry(change, entry) do
-      Add.apply(change, entry)
+      Add.apply_to(change, entry)
     end
   end
 
