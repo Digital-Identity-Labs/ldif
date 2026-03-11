@@ -66,7 +66,7 @@ defmodule LDIF.Modify do
   end
 
   defimpl LDIF.Change, for: LDIF.Modify do
-    def apply(change, entry) do
+    def apply_to_entry(change, entry) do
       Modify.apply(change, entry)
     end
   end

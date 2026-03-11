@@ -1,3 +1,3 @@
 defprotocol LDIF.Change do
-  def apply(change, entry)
+  def apply_to_entry(change, entry)
 end

@@ -37,7 +37,7 @@ defmodule LDIF do
   end
 
   def apply_changes(changes, entries) do
-    Apply.apply(changes, entries)
+    Apply.apply_changes(changes, entries)
   end
 
   #  def entry(dn, attributes) do

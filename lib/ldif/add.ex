@@ -26,7 +26,7 @@ defmodule LDIF.Add do
   end
 
   defimpl LDIF.Change, for: LDIF.Add do
-    def apply(change, entry) do
+    def apply_to_entry(change, entry) do
       Add.apply(change, entry)
     end
   end

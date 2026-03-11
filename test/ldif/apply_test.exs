@@ -3,7 +3,7 @@ defmodule ApplyTest do
 
   alias LDIF.Apply
 
-  describe "apply/1" do
+  describe "apply_changes/1" do
 
 #    test "applies a single change to an entry, and returns a list with one or more entries" do
 ##      change =

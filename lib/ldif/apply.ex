@@ -6,15 +6,15 @@ defmodule  LDIF.Apply do
   alias LDIF.DNUtils
   alias LDIF.Add
 
-  def apply(change, %Entry{} = entry) when is_struct(change)do
-    Apply.apply(List.wrap(change), List.wrap(entry))
+  def apply_changes(change, %Entry{} = entry) when is_struct(change)do
+    apply_changes(List.wrap(change), List.wrap(entry))
   end
 
-  def apply(changes, %Entry{} = entry) when is_list(changes)do
-    Apply.apply(changes, List.wrap(entry))
+  def apply_changes(changes, %Entry{} = entry) when is_list(changes)do
+    apply_changes(changes, List.wrap(entry))
   end
   
-  def apply(all_changes, all_entries) when is_list(all_changes) and is_list(all_entries) do
+  def apply_changes(all_changes, all_entries) when is_list(all_changes) and is_list(all_entries) do
     apply_adds(all_changes, all_entries) ++ apply_edits(all_changes, all_entries)
   end
 
@@ -35,7 +35,7 @@ defmodule  LDIF.Apply do
            )
          end
        )
-    |> Enum.map(fn change -> Change.apply(change, nil) end)
+    |> Enum.map(fn change -> Change.apply_to_entry(change, nil) end)
     |> List.flatten()
     |> Enum.reject(&is_nil/1)
 
@@ -59,9 +59,9 @@ defmodule  LDIF.Apply do
                entry,
                fn
                  _change, nil -> [nil]
-                 change, [entry1, entry2] -> Change.apply(change, entry1) ++ [entry2]
-                 change, [entry] -> Change.apply(change, entry)
-                 change, entry -> Change.apply(change, entry)
+                 change, [entry1, entry2] -> Change.apply_to_entry(change, entry1) ++ [entry2]
+                 change, [entry] -> Change.apply_to_entry(change, entry)
+                 change, entry -> Change.apply_to_entry(change, entry)
                end)
              |> List.flatten()
              |> Enum.reject(&is_nil/1)

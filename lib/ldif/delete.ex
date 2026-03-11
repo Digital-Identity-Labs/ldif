@@ -26,7 +26,7 @@ defmodule LDIF.Delete do
   end
 
   defimpl LDIF.Change, for: LDIF.Delete do
-    def apply(change, entry) do
+    def apply_to_entry(change, entry) do
       Delete.apply(change, entry)
     end
   end

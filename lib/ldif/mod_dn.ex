@@ -54,7 +54,7 @@ defmodule LDIF.ModDN do
   end
 
   defimpl LDIF.Change, for: LDIF.ModDN do
-    def apply(change, entry) do
+    def apply_to_entry(change, entry) do
       ModDN.apply(change, entry)
     end
   end

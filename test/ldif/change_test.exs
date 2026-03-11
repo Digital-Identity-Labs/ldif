@@ -55,7 +55,7 @@ defmodule ChangeTest do
                   }
                 )
 
-  describe "apply/2" do
+  describe "apply_to_entry/2" do
 
     test "LDIF.Add supports the protocol" do
       assert [
@@ -69,17 +69,17 @@ defmodule ChangeTest do
                    "uid" => ["fiona"]
                  }
                }
-             ] = Change.apply(@add_change, nil)
+             ] = Change.apply_to_entry(@add_change, nil)
     end
 
     test "LDIF.Delete supports the protocol" do
-      assert [] = Change.apply(@delete_change, %Entry{dn: "cn=Robert Jensen, ou=Marketing, dc=airius, dc=com"})
+      assert [] = Change.apply_to_entry(@delete_change, %Entry{dn: "cn=Robert Jensen, ou=Marketing, dc=airius, dc=com"})
     end
 
     test "LDIF.ModDN supports the protocol" do
       assert [
                %LDIF.Entry{dn: "ou=Product Development Accountants, ou=Accounting, dc=airius, dc=com", attributes: %{}}
-             ] = Change.apply(
+             ] = Change.apply_to_entry(
                @moddn_change,
                %Entry{dn: "ou=PD Accountants, ou=Product Development, dc=airius, dc=com"}
              )
@@ -99,7 +99,7 @@ defmodule ChangeTest do
                    "telephonenumber" => ["+1 408 555 1212"]
                  }
                }
-             ] = Change.apply(@mod_change, @mod_entry)
+             ] = Change.apply_to_entry(@mod_change, @mod_entry)
     end
 
   end
