@@ -18,11 +18,11 @@ defmodule LDIF.Add do
   end
 
   def apply(change, nil) do
-    Entry.new(change.dn, change.attributes)
+    [Entry.new(change.dn, change.attributes)]
   end
 
-  def apply(_change, _entry) do
-    raise "Cannot add to an existing entry!"
+  def apply(change, entry) do
+    [Add.apply(change, nil), entry]
   end
 
   defimpl LDIF.Change, for: LDIF.Add do
