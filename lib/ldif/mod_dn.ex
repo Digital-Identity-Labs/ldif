@@ -43,20 +43,19 @@ defmodule LDIF.ModDN do
       end
 
       cond do
-        dn == entry.dn -> entry
-        change.deleteoldrdn -> %{entry | dn: dn}
+        dn == entry.dn -> [entry]
+        change.deleteoldrdn -> [%{entry | dn: dn}]
         true -> [%{entry | dn: dn}, entry]
       end
 
     else
-      entry
+      [entry]
     end
   end
 
   defimpl LDIF.Change, for: LDIF.ModDN do
     def apply(change, entry) do
       ModDN.apply(change, entry)
-      |> List.wrap()
     end
   end
 

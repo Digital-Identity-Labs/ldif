@@ -19,16 +19,15 @@ defmodule LDIF.Delete do
 
   def apply(change, entry) do
     if DNUtils.normalize_dn(change.dn) == DNUtils.normalize_dn(entry.dn) do
-      nil
+      []
     else
-      entry
+      [entry]
     end
   end
 
   defimpl LDIF.Change, for: LDIF.Delete do
     def apply(change, entry) do
       Delete.apply(change, entry)
-      |> List.wrap()
     end
   end
 

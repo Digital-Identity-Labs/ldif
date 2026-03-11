@@ -25,12 +25,12 @@ defmodule DeleteTest do
 
     test "returns nil if the passed entry matches the DN" do
       change = Delete.new(@dn, @attrs)
-      assert is_nil(Delete.apply(change, %Entry{dn: @dn}))
+      assert [] = Delete.apply(change, %Entry{dn: @dn})
     end
 
     test "returns the Entry unchanged if the passed entry does not match the DN" do
       change = Delete.new("cn=Bob Jensen, ou=Marketing, dc=airius, dc=com", @attrs)
-      assert %Entry{dn: @dn} = Delete.apply(change, %Entry{dn: @dn})
+      assert [%Entry{dn: @dn}] = Delete.apply(change, %Entry{dn: @dn})
     end
 
   end

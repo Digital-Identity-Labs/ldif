@@ -80,33 +80,38 @@ defmodule ModifyTest do
 
     test "returns the Entry unchanged if the passed entry does not match the DN" do
       change = Modify.new("cn=Bob Jensen, ou=Marketing, dc=airius, dc=com", @changes_add)
-      assert %Entry{dn: @dn} = Modify.apply(change, %Entry{dn: @dn})
+      assert [%Entry{dn: @dn}] = Modify.apply(change, %Entry{dn: @dn})
     end
 
     test "can add additional values to an existing attribute" do
       change = Modify.new(@dn, @changes_add)
-      assert %Entry{
-               attributes: %{
-                 "postaladdress" =>
-                   ["1 Everystreet $ Manchester, UK", "123 Anystreet $ Sunnyvale, CA $ 94086"]
+      assert [
+               %Entry{
+                 attributes: %{
+                   "postaladdress" =>
+                     ["1 Everystreet $ Manchester, UK", "123 Anystreet $ Sunnyvale, CA $ 94086"]
+                 }
                }
-             } = Modify.apply(change, %Entry{dn: @dn, attributes: @attrs})
+             ] = Modify.apply(change, %Entry{dn: @dn, attributes: @attrs})
     end
 
     test "can add values to a missing attribute" do
       change = Modify.new(@dn, @changes_add)
-      assert %Entry{
-               attributes: %{
-                 "postaladdress" =>
-                   ["123 Anystreet $ Sunnyvale, CA $ 94086"]
+      assert [
+               %Entry{
+                 attributes: %{
+                   "postaladdress" =>
+                     ["123 Anystreet $ Sunnyvale, CA $ 94086"]
+                 }
                }
-             } = Modify.apply(change, %Entry{dn: @dn, attributes: Map.delete(@attrs, "postaladdress")})
+             ] = Modify.apply(change, %Entry{dn: @dn, attributes: Map.delete(@attrs, "postaladdress")})
     end
 
     test "can delete an entire attribute if it exists" do
       change = Modify.new(@dn, @changes_del1)
       refute Map.has_key?(
                Modify.apply(change, %Entry{dn: @dn, attributes: @attrs})
+               |> List.first()
                |> Map.get(:attributes, %{}),
                "description"
              )
@@ -121,30 +126,40 @@ defmodule ModifyTest do
 
     test "can delete a specific value of an attribute" do
       change = Modify.new(@dn, @changes_del2)
-      assert %Entry{
-               attributes: %{
-                 "facsimiletelephonenumber" => ["+1 408 555 9877"]
+      assert [
+               %Entry{
+                 attributes: %{
+                   "facsimiletelephonenumber" => ["+1 408 555 9877"]
+                 }
                }
-             } = Modify.apply(change, %Entry{dn: @dn, attributes: @attrs})
+             ] = Modify.apply(change, %Entry{dn: @dn, attributes: @attrs})
     end
 
     test "can remove an attribute that exists by giving it no values" do
       change = Modify.new(@dn, @changes_rep2)
-      refute Map.has_key?(Modify.apply(change, %Entry{dn: @dn, attributes: @attrs}).attributes, "telephonenumber")
+      refute Map.has_key?(
+               List.first(Modify.apply(change, %Entry{dn: @dn, attributes: @attrs})).attributes,
+               "telephonenumber"
+             )
     end
 
     test "will not error when asked to remove an attribute that does not exist by giving it no values" do
       change = Modify.new(@dn, @changes_rep3)
-      refute Map.has_key?(Modify.apply(change, %Entry{dn: @dn, attributes: @attrs}).attributes, "inscription")
+      refute Map.has_key?(
+               List.first(Modify.apply(change, %Entry{dn: @dn, attributes: @attrs})).attributes,
+               "inscription"
+             )
     end
 
     test "can replace the values of an attribute" do
       change = Modify.new(@dn, @changes_rep1)
-      assert %Entry{
-               attributes: %{
-                 "telephonenumber" => ["+1 408 555 1234", "+1 408 555 5678"]
+      assert [
+               %Entry{
+                 attributes: %{
+                   "telephonenumber" => ["+1 408 555 1234", "+1 408 555 5678"]
+                 }
                }
-             } = Modify.apply(change, %Entry{dn: @dn, attributes: @attrs})
+             ] = Modify.apply(change, %Entry{dn: @dn, attributes: @attrs})
     end
 
   end

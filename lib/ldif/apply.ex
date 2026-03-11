@@ -1,18 +1,19 @@
 defmodule  LDIF.Apply do
 
+  alias LDIF.Apply
   alias LDIF.Change
   alias LDIF.Entry
   alias LDIF.DNUtils
   alias LDIF.Add
 
-  def apply(change, %Entry{} = entry) when is_map(change)do
-    List.wrap(Change.apply(change, entry))
+  def apply(change, %Entry{} = entry) when is_struct(change)do
+    Apply.apply(List.wrap(change), List.wrap(entry))
   end
 
   def apply(changes, %Entry{} = entry) when is_list(changes)do
-    Change.apply(changes, List.wrap(entry))
+    Apply.apply(changes, List.wrap(entry))
   end
-
+  
   def apply(all_changes, all_entries) when is_list(all_changes) and is_list(all_entries) do
     apply_adds(all_changes, all_entries) ++ apply_edits(all_changes, all_entries)
   end

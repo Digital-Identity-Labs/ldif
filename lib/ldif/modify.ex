@@ -25,9 +25,9 @@ defmodule LDIF.Modify do
 
   def apply(change, entry) do
     if DNUtils.normalize_dn(change.dn) == DNUtils.normalize_dn(entry.dn) do
-      modify(change, entry)
+      [modify(change, entry)]
     else
-      entry
+      [entry]
     end
   end
 
@@ -68,7 +68,6 @@ defmodule LDIF.Modify do
   defimpl LDIF.Change, for: LDIF.Modify do
     def apply(change, entry) do
       Modify.apply(change, entry)
-      |> List.wrap()
     end
   end
 

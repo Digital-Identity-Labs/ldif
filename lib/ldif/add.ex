@@ -22,13 +22,12 @@ defmodule LDIF.Add do
   end
 
   def apply(change, entry) do
-    [Add.apply(change, nil), entry]
+    Add.apply(change, nil) ++ [entry]
   end
 
   defimpl LDIF.Change, for: LDIF.Add do
     def apply(change, entry) do
       Add.apply(change, entry)
-      |> List.wrap()
     end
   end
 

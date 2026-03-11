@@ -38,12 +38,12 @@ defmodule AddTest do
     test "returns Entry struct with the specified DN and attributes when nil is passed as an Entry" do
       attrs = Map.delete(@attrs, "changetype")
       change = Add.new(@dn, @attrs)
-      assert %Entry{dn: @dn, attributes: ^attrs} = Add.apply(change, nil)
+      assert [%Entry{dn: @dn, attributes: ^attrs}] = Add.apply(change, nil)
     end
 
-    test "raises an exception if passed an Entry as well as a change" do
+    test "does not raise an exception if passed an Entry as well as a change" do
       change = Add.new(@dn, @attrs)
-      assert_raise RuntimeError, fn -> Add.apply(change, %Entry{}) end
+      assert [%Entry{dn: @dn}, %Entry{dn: "cn=banana"}] = Add.apply(change, %Entry{dn: "cn=banana"})
     end
 
   end
