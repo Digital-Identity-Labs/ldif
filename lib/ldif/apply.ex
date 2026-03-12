@@ -15,7 +15,7 @@ defmodule  LDIF.Apply do
 
   ############################
 
-  def apply_adds(all_changes, all_entries) when is_list(all_changes) and is_list(all_entries) do
+  defp apply_adds(all_changes, all_entries) when is_list(all_changes) and is_list(all_entries) do
 
     entries_lookup = entries_lookup_map(all_entries)
     
@@ -36,7 +36,7 @@ defmodule  LDIF.Apply do
 
   end
 
-  def apply_edits(all_changes, all_entries) when is_list(all_changes) and is_list(all_entries) do
+  defp apply_edits(all_changes, all_entries) when is_list(all_changes) and is_list(all_entries) do
 
     changes_lookup = changes_lookup_map(all_changes)
     
@@ -65,7 +65,7 @@ defmodule  LDIF.Apply do
        )
   end
 
-  def filter(changes, entries) do
+  defp filter(changes, entries) do
 
     dns = change_entry_intersection_dns(changes, entries)
 
@@ -79,24 +79,24 @@ defmodule  LDIF.Apply do
 
   end
 
-  def changes_lookup_map(list) do
+  defp changes_lookup_map(list) do
     list
     |> Enum.group_by(fn c -> DNUtils.normalize_dn(c.dn) end, fn c -> c end)
   end
 
-  def entries_lookup_map(list) do
+  defp entries_lookup_map(list) do
     list
     |> Enum.map(fn entry -> {DNUtils.normalize_dn(entry.dn), entry} end)
     |> Map.new()
   end
 
-  def change_entry_intersection_dns(changes, entries) do
+  defp change_entry_intersection_dns(changes, entries) do
     change_dns = MapSet.new(list_dns(changes))
     entry_dns = MapSet.new(list_dns(entries))
     MapSet.intersection(entry_dns, change_dns)
   end
 
-  def list_dns(list) do
+  defp list_dns(list) do
     list
     |> Enum.map(fn s -> DNUtils.normalize_dn(s.dn) end)
   end
