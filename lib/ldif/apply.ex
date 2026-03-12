@@ -1,21 +1,16 @@
 defmodule  LDIF.Apply do
-
-  alias LDIF.Apply
+  
   alias LDIF.Change
-  alias LDIF.Entry
   alias LDIF.DNUtils
   alias LDIF.Add
-
-  def apply_changes(change, %Entry{} = entry) when is_struct(change)do
-    apply_changes(List.wrap(change), List.wrap(entry))
-  end
-
-  def apply_changes(changes, %Entry{} = entry) when is_list(changes)do
-    apply_changes(changes, List.wrap(entry))
-  end
   
-  def apply_changes(all_changes, all_entries) when is_list(all_changes) and is_list(all_entries) do
+  def apply_changes(all_changes, all_entries) do
+    
+    all_changes = List.wrap(all_changes)
+    all_entries = List.wrap(all_entries)
+    
     apply_adds(all_changes, all_entries) ++ apply_edits(all_changes, all_entries)
+    |> List.flatten()
   end
 
   ############################
@@ -23,7 +18,7 @@ defmodule  LDIF.Apply do
   def apply_adds(all_changes, all_entries) when is_list(all_changes) and is_list(all_entries) do
 
     entries_lookup = entries_lookup_map(all_entries)
-
+    
     all_changes
     |> Enum.filter(fn change -> is_struct(change, Add) end)
     |> Enum.map(
@@ -44,13 +39,13 @@ defmodule  LDIF.Apply do
   def apply_edits(all_changes, all_entries) when is_list(all_changes) and is_list(all_entries) do
 
     changes_lookup = changes_lookup_map(all_changes)
-
+    
     # Edits
     all_entries
     |> Enum.reject(fn entry -> is_struct(entry, Add) end)
     |> Enum.map(
          fn entry ->
-           changes = Map.get(changes_lookup, entry.dn, [])
+           changes = Map.get(changes_lookup, DNUtils.normalize_dn(entry.dn), [])
            if Enum.empty?(changes) do
              [entry]
            else
@@ -61,9 +56,9 @@ defmodule  LDIF.Apply do
                  _change, nil -> [nil]
                  change, [entry1, entry2] -> Change.apply_to_entry(change, entry1) ++ [entry2]
                  change, [entry] -> Change.apply_to_entry(change, entry)
+                 _change, [] -> []
                  change, entry -> Change.apply_to_entry(change, entry)
                end)
-             |> List.flatten()
              |> Enum.reject(&is_nil/1)
            end
          end
@@ -86,12 +81,12 @@ defmodule  LDIF.Apply do
 
   def changes_lookup_map(list) do
     list
-    |> Enum.group_by(fn c -> c.dn end, fn c -> c end)
+    |> Enum.group_by(fn c -> DNUtils.normalize_dn(c.dn) end, fn c -> c end)
   end
 
   def entries_lookup_map(list) do
     list
-    |> Enum.map(fn entry -> {entry.dn, entry} end)
+    |> Enum.map(fn entry -> {DNUtils.normalize_dn(entry.dn), entry} end)
     |> Map.new()
   end
 
