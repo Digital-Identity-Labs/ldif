@@ -28,40 +28,16 @@ defmodule LDIF do
     |> Enum.to_list()
   end
 
-  def stream_entries!(ldif, opts \\ []) do
+  def decode_entries_as_stream!(ldif, opts \\ []) do
     Import.entries(ldif, Keyword.merge(@default_import_opts, opts))
   end
 
-  def stream_changes!(ldif, opts \\ []) do
+  def decode_changes_as_stream!(ldif, opts \\ []) do
     Import.changes(ldif, Keyword.merge(@default_import_opts, opts))
   end
 
   def apply_changes(changes, entries) do
     Apply.apply_changes(changes, entries)
   end
-
-  #  def entry(dn, attributes) do
-  #    Entry.new(dn, attributes)
-  #  end
-  #
-  #  def change(dn, :add, attributes) do
-  #    Add.new(dn, attributes)
-  #  end
-  #
-  #  def change(dn, :modify, attributes) do
-  #    Modify.new(dn, attributes)
-  #  end
-  #
-  #  def change(dn, :delete, attributes) do
-  #    Delete.new(dn, attributes)
-  #  end
-  #
-  #  def change(dn, :mod_dn, attributes) do
-  #    ModDN.new(dn, attributes)
-  #  end
-  #
-  #  def change(_, type, _) do
-  #    raise "Unknown change type '#{type}'. Available change types are :add, :modify, :delete and :mod_dn"
-  #  end
   
 end
