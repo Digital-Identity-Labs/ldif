@@ -2,7 +2,7 @@
 
 `LDIF` is a simple Elixir parser for [LDIF](https://www.rfc-editor.org/rfc/rfc2849)-formatted text files. 
 It will convert the entries in them to Elixir structs, and can directly apply LDIF change records to normal
-LDIF records.
+LDIF records. RFC 2849 describes it as:
 
 > ... a file format suitable for describing
 > directory information or modifications made to directory information.
@@ -43,6 +43,7 @@ title:Product Manager, Rod and Reel Division
 
 * Import normal LDAP directory entries from a string or a file, as a list of structs.
 * Import LDIF-formatted changes and apply to them to a list of entries
+* Supports including external data in entry attributes. Both file:// and https:// are supported but optional
 * A few utility functions are provided to directly modify entries - you can change DNs, adjust attribute values and
   so on.
 
@@ -53,13 +54,61 @@ The top level `LDIF` module may contain all the functions you need, but the foll
 
 ## Caveats
 
-* This is an early release that *probably* does the one thing I need it to do, adequately (import LDIF records)
-* It can apply changes to entries, but I've not used this in production. 
+* This is an early release that *probably* does the one thing I need it to do: adequately import LDIF records.
+* It can apply changes to entries directly, skipping the LDAP server, but I've not used this in production. Is it
+  reliable or actually useful? I don't know.
 * There is no export feature yet. Please let me know if you'd find this useful.
 
 ## Examples
 
 ### Importing an LDIF of directory entries
+
+```elixir
+ldif = File.read!("test/support/rfc_jensen_entries.ldif")
+
+LDIF.decode_entries!(ldif)
+|> List.first()
+#=> []
+```
+
+### Using a sigil to parse LDIF, then reading an attribute
+
+```elixir
+
+    require LDIF.Sigil
+
+    entries = ~L"""
+    dn:cn=Barbara Jensen, ou=Product Development, dc=airius, dc=com
+    objectclass:top
+    objectclass:person
+    objectclass:organizationalPerson
+    cn:Barbara Jensen
+    cn:Barbara J Jensen
+    cn:Babs Jensen
+    sn:Jensen
+    uid:bjensen
+    telephonenumber:+1 408 555 1212
+    description:Babs is a big sailing fan, and travels extensively in sea
+      rch of perfect sailing conditions.
+    title:Product Manager, Rod and Reel Division
+    """
+    |> List.first()
+    |> LDIF.Entry.attribute("cn")
+#=> []
+```
+
+### Applying changes to a list of entries
+
+```elixir
+entries = File.read!("test/support/rfc_jensen_entries.ldif")
+          |> LDIF.decode_entries!(ldif)
+
+changes = File.read!("test/support/rfc_jensen_changes.ldif")
+          |> LDIF.decode_changes!(ldif)
+
+LDIF.apply_changes!(changes, entries)
+#=> []
+```
 
 ## Installation
 
