@@ -19,12 +19,12 @@ defmodule LDIF do
   ]
 
   def decode_entries!(ldif, opts \\ []) do
-    stream_entries!(ldif, opts)
+    decode_entries_as_stream!(ldif, opts)
     |> Enum.to_list()
   end
 
   def decode_changes!(ldif, opts \\ []) do
-    stream_changes!(ldif, opts)
+    decode_changes_as_stream!(ldif, opts)
     |> Enum.to_list()
   end
 
