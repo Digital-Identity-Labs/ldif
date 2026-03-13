@@ -1,7 +1,5 @@
 defmodule LDIF.Modify do
-  @moduledoc """
-  Documentation for `Ldif`.
-  """
+  @moduledoc false
 
   alias __MODULE__
   alias LDIF.DNUtils

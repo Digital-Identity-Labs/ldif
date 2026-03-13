@@ -1,5 +1,7 @@
 defmodule LDIF.AttrMapper do
 
+  @moduledoc false
+  
   require Logger
 
   alias LDIF.Entry

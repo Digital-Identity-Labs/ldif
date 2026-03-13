@@ -1,5 +1,6 @@
 defmodule  LDIF.Import.Transform do
-
+  @moduledoc false
+  
   alias LDIF.DNUtils
 
   @spec attributes(attr_list :: list(), opts :: keyword()) :: list()

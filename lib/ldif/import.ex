@@ -1,5 +1,6 @@
 defmodule  LDIF.Import do
-
+  @moduledoc false
+  
   alias LDIF.Import.Entries
   alias LDIF.Import.Changes
 

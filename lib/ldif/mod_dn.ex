@@ -1,8 +1,6 @@
 defmodule LDIF.ModDN do
-  @moduledoc """
-  Documentation for `Ldif`.
-  """
-
+  @moduledoc false
+  
   alias __MODULE__
   alias LDIF.DNUtils
   alias LDIF.Entry

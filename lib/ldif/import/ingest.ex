@@ -1,5 +1,7 @@
 defmodule  LDIF.Import.Ingest do
-
+  @moduledoc false
+  
+  
   @spec attribute(name :: binary(), opts :: keyword()) :: nil
   def attribute("-", _opts) do
     nil

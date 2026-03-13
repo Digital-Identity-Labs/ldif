@@ -1,5 +1,7 @@
 defmodule LDIF.Filter do
-
+  @moduledoc """
+   Docs
+  """
   @spec objectclass(enum :: Enumerable.t(), class :: binary(), bool :: boolean()) :: Enumerable.t()
   def objectclass(enum, class, bool \\ true) do
     enum

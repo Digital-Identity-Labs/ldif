@@ -1,5 +1,6 @@
 defmodule  LDIF.Import.Entries do
-
+  @moduledoc false
+  
   alias LDIF.Entry
   alias LDIF.Import.Record
   alias LDIF.Import.Ingest

@@ -1,5 +1,5 @@
 defmodule LDIF.Export do
-
+  @moduledoc false
   alias LDIF.Export.Entries
   alias LDIF.Export.Changes
 

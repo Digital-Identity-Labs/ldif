@@ -1,4 +1,6 @@
 defmodule  LDIF.Apply do
+
+  @moduledoc false
   
   alias LDIF.Change
   alias LDIF.DNUtils

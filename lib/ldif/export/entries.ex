@@ -1,5 +1,5 @@
 defmodule  LDIF.Export.Entries do
-
+  @moduledoc false
   #alias LDIF.Entry
 
   def export(_entries, _opts) do
