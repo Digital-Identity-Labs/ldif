@@ -1,11 +1,70 @@
-# Ldif
+# LDIF
 
-**TODO: Add description**
+`LDIF` is a simple Elixir parser for [LDIF](https://www.rfc-editor.org/rfc/rfc2849)-formatted text files. 
+It will convert the entries in them to Elixir structs, and can directly apply LDIF change records to normal
+LDIF records.
+
+> ... a file format suitable for describing
+> directory information or modifications made to directory information.
+> The file format, known as LDIF, for LDAP Data Interchange Format, is
+> typically used to import and export directory information between
+> LDAP-based directory servers, or to describe a set of changes which
+> are to be applied to a directory.
+
+The LDIF format is commonly used for importing records and changes into LDAP directories such as
+[OpenLDAP](https://www.openldap.org). Records are typically for contact details, user accounts, groups and
+departments but can be for any information.
+
+Here is an example LDIF record: 
+
+```ldif
+dn:cn=Barbara Jensen, ou=Product Development, dc=airius, dc=com
+objectclass:top
+objectclass:person
+objectclass:organizationalPerson
+cn:Barbara Jensen
+cn:Barbara J Jensen
+cn:Babs Jensen
+sn:Jensen
+uid:bjensen
+telephonenumber:+1 408 555 1212
+description:Babs is a big sailing fan, and travels extensively in sea
+ rch of perfect sailing conditions.
+title:Product Manager, Rod and Reel Division
+```
+
+[![Hex pm](http://img.shields.io/hexpm/v/ldif.svg?style=flat)](https://hex.pm/packages/ror)
+[![API Docs](https://img.shields.io/badge/api-docs-yellow.svg?style=flat)](http://hexdocs.pm/ldif/)
+![Github Elixir CI](https://github.com/Digital-Identity-Labs/ldif/workflows/ElixirCI/badge.svg)
+
+[![Run in Livebook](https://livebook.dev/badge/v1/blue.svg)](https://livebook.dev/run?url=https%3A%2F%2Fraw.githubusercontent.com%2FDigital-Identity-Labs%2Fldif%2Fmain%2Fldif_notebook.livemd)
+
+## Features
+
+* Import normal LDAP directory entries from a string or a file, as a list of structs.
+* Import LDIF-formatted changes and apply to them to a list of entries
+* A few utility functions are provided to directly modify entries - you can change DNs, adjust attribute values and
+  so on.
+
+The top level `LDIF` module may contain all the functions you need, but the following other modules may be of use:
+
+* `LDIF.Sigil` provides a sigil for importing LDIF data in documentation and tests
+* `LDIF.Entry` has various features for working with LDIF entries
+
+## Caveats
+
+* This is an early release that *probably* does the one thing I need it to do, adequately (import LDIF records)
+* It can apply changes to entries, but I've not used this in production. 
+* There is no export feature yet. Please let me know if you'd find this useful.
+
+## Examples
+
+### Importing an LDIF of directory entries
 
 ## Installation
 
 If [available in Hex](https://hex.pm/docs/publish), the package can be installed
-by adding `ldif` to your list of dependencies in `mix.exs`:
+by adding `LDIF` to your list of dependencies in `mix.exs`:
 
 ```elixir
 def deps do
@@ -15,13 +74,34 @@ def deps do
 end
 ```
 
+## References
+
+### LDIF Resources
 * https://www.rfc-editor.org/rfc/rfc2849
 * https://en.wikipedia.org/wiki/LDAP_Data_Interchange_Format
 * https://datatracker.ietf.org/doc/html/rfc3866
-* https://ldapwiki.com/wiki/Wiki.jsp?page=Modrdn 
+* https://ldapwiki.com/wiki/Wiki.jsp?page=Modrdn
 
+## Documentation
 
 Documentation can be generated with [ExDoc](https://github.com/elixir-lang/ex_doc)
 and published on [HexDocs](https://hexdocs.pm). Once published, the docs can
 be found at <https://hexdocs.pm/ldif>.
 
+## Contributing
+
+You can request new features by creating an [issue](https://github.com/Digital-Identity-Labs/ldif/issues),
+or submit a [pull request](https://github.com/Digital-Identity-Labs/ldif/pulls) with your contribution.
+
+If you are comfortable working with Python but ROR's Elixir code is unfamiliar then this blog post may help:
+[Elixir For Humans Who Know Python](https://hibox.live/elixir-for-humans-who-know-python)
+
+## Copyright and License
+
+Copyright (c) 2026 Digital Identity Ltd, UK
+
+This software is MIT licensed.
+
+## Disclaimer
+
+This software may change considerably in the first few releases after 0.1.0 - it is not yet stable!

@@ -1,8 +1,6 @@
 defmodule  LDIF.DNUtils do
-  @moduledoc """
-  Documentation for `Ldif`.
-  """
-
+  @moduledoc false
+  
   @spec normalize_dn(dn :: binary()) :: binary() 
   def normalize_dn(dn) do
     String.trim(dn)
