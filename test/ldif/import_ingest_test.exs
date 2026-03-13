@@ -1,7 +1,7 @@
 defmodule ImportIngestTest do
   use ExUnit.Case
 
-  alias LDIF.ImportIngest
+  #alias LDIF.ImportIngest
 
 #  describe "entries/2" do
 #    test "returns Not Implemented Yet" do

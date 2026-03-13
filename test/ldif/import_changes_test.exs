@@ -1,10 +1,6 @@
 defmodule ImportChangesTest do
   use ExUnit.Case
-
-  alias LDIF.Add
-  alias LDIF.Delete
-  alias LDIF.Modify
-  alias LDIF.ModDN
+  
   alias LDIF.Import.Changes
 
   @changes File.read!("test/support/rfc_jensen_changes.ldif")
@@ -197,7 +193,7 @@ defmodule ImportChangesTest do
         description:< file:///tmp/description.txt
         """
 
-      assert %Add{
+      assert %LDIF.Add{
                attributes: %{
                  "description" => ["Test Description"]
                }
@@ -221,7 +217,7 @@ defmodule ImportChangesTest do
         description:< https://www.rfc-editor.org/rfc/rfc2849
         """
 
-      assert %Add{
+      assert %LDIF.Add{
                attributes: %{
                  "description" => ["\n<!DOCTYPE html" <> _]
                }
@@ -244,7 +240,7 @@ defmodule ImportChangesTest do
         telephonenumber: +1 408 555 1212
         """
 
-      assert %Add{dn: "cn=fiona jensen,ou=marketing,dc=airius,dc=com"} = Changes.import(text, normalize_dns: true)
+      assert %LDIF.Add{dn: "cn=fiona jensen,ou=marketing,dc=airius,dc=com"} = Changes.import(text, normalize_dns: true)
                                                                          |> Enum.to_list()
                                                                          |> List.first()
     end

@@ -65,20 +65,6 @@ defmodule  LDIF.Apply do
        )
   end
 
-  defp filter(changes, entries) do
-
-    dns = change_entry_intersection_dns(changes, entries)
-
-    changes = changes
-              |> Enum.filter(fn change -> change.dn in dns end)
-
-    entries = entries
-              |> Enum.filter(fn entry -> entry.dn in dns end)
-
-    {changes, entries}
-
-  end
-
   defp changes_lookup_map(list) do
     list
     |> Enum.group_by(fn c -> DNUtils.normalize_dn(c.dn) end, fn c -> c end)
@@ -88,17 +74,6 @@ defmodule  LDIF.Apply do
     list
     |> Enum.map(fn entry -> {DNUtils.normalize_dn(entry.dn), entry} end)
     |> Map.new()
-  end
-
-  defp change_entry_intersection_dns(changes, entries) do
-    change_dns = MapSet.new(list_dns(changes))
-    entry_dns = MapSet.new(list_dns(entries))
-    MapSet.intersection(entry_dns, change_dns)
-  end
-
-  defp list_dns(list) do
-    list
-    |> Enum.map(fn s -> DNUtils.normalize_dn(s.dn) end)
   end
 
 end

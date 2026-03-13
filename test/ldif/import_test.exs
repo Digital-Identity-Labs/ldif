@@ -2,9 +2,6 @@ defmodule ImportTest do
   use ExUnit.Case
 
   alias LDIF.Add
-  alias LDIF.Delete
-  alias LDIF.Modify
-  alias LDIF.ModDN
   alias LDIF.Entry
   alias LDIF.Import
 
