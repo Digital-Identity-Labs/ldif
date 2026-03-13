@@ -5,6 +5,7 @@ defmodule  LDIF.Import.Entries do
   alias LDIF.Import.Ingest
   alias LDIF.Import.Transform
 
+  @spec import(ldif ::binary(), opts :: keyword()) :: function() | %Stream{}  
   def import(ldif, opts \\ []) do
     ldif
     |> Record.stream()
@@ -14,6 +15,7 @@ defmodule  LDIF.Import.Entries do
 
   ###########################
 
+  @spec ingest(text :: binary(), opts :: keyword()) :: map()
   defp ingest(text, opts) do
     text
     |> Record.unfold(opts)
@@ -26,11 +28,8 @@ defmodule  LDIF.Import.Entries do
     |> join(opts)
     |> Transform.entry(opts)
   end
-
-#  defp join(map, _opts) when is_map(map) do
-#    map
-#  end
-
+  
+  @spec join(parts :: list(), opts :: keyword())  :: map()
   defp join(parts, _opts) when is_list(parts) do
 
     map = parts

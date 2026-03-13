@@ -1,5 +1,6 @@
 defmodule LDIF.Sigil do
-  
+
+  #@spec sigil_L(term :: binary(), modifiers :: charlist()) :: list()
   defmacro sigil_L(term, modifiers)
   defmacro sigil_L({:<<>>, _meta, _pieces} = ldif_text, modifiers) do
 

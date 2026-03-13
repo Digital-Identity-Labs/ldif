@@ -1,9 +1,11 @@
 defmodule  LDIF.Import.Ingest do
 
+  @spec attribute(name :: binary(), opts :: keyword()) :: nil
   def attribute("-", _opts) do
     nil
   end
 
+  @spec attribute(name :: binary(), value :: binary(), opts :: keyword()) :: nil | tuple()
   def attribute("version", _value, _opts) do
     nil
   end
@@ -24,6 +26,7 @@ defmodule  LDIF.Import.Ingest do
     {name, value}
   end
 
+  @spec read_external(url :: binary(), opts :: keyword()) :: binary()
   defp read_external("file:" <> _ = value, opts) do
     if opts[:ext_files] == true do
       String.replace_leading(value, "file://", "")

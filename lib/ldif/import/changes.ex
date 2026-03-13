@@ -8,6 +8,7 @@ defmodule  LDIF.Import.Changes do
   alias LDIF.Import.Ingest
   alias LDIF.Import.Transform
 
+  @spec import(ldif :: binary(), opts :: keyword()) :: function() | %Stream{}
   def import(ldif, opts \\ []) do
     ldif
     |> Record.stream()
@@ -17,6 +18,7 @@ defmodule  LDIF.Import.Changes do
 
   ###############################
 
+  @spec ingest(text:: binary(), opts :: keyword()) :: list()
   defp ingest(text, opts) do
     text
     |> Record.unfold(opts)
@@ -35,25 +37,23 @@ defmodule  LDIF.Import.Changes do
          end
        )
   end
-
-#  defp join(map, _opts) when is_map(map) do
-#    map
-#  end
-
+  
+  @spec join(parts :: list(), opts :: keyword()) :: map()
   defp join(parts, _opts) when is_list(parts) do
-
     map = parts
           |> Enum.reject(&is_nil/1)
           |> Enum.group_by(fn {n, _v} -> n end, fn {_n, v} -> v end)
     Map.put(map, "dn", List.first(Map.get(map, "dn")))
   end
 
+  @spec split_changes(items :: list(), opts :: keyword()) :: list()
   defp split_changes(items, _opts) do
     items
     |> Enum.chunk_by(fn row -> row == ["-"] end)
     |> Enum.reject(fn row -> row == [["-"]] end)
   end
 
+  @spec standalone_changes(changes :: list(), opts :: keyword()) :: list()
   defp standalone_changes(changes, _opts) do
     [["dn", dn] | _] = List.first(changes)
     ["changetype", changetype] = Enum.find(List.first(changes), fn [k, _v] -> k == "changetype"  end)
@@ -61,6 +61,7 @@ defmodule  LDIF.Import.Changes do
 
   end
 
+  @spec to_struct(dn :: binary(), data :: map()) :: struct() 
   defp to_struct(dn, data) do
     type = List.first(data["changetype"])
     case type do

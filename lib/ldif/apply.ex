@@ -4,6 +4,7 @@ defmodule  LDIF.Apply do
   alias LDIF.DNUtils
   alias LDIF.Add
   
+  @spec apply_changes(all_changes :: list(), all_entries :: list()) :: list()
   def apply_changes(all_changes, all_entries) do
     
     all_changes = List.wrap(all_changes)
@@ -15,6 +16,7 @@ defmodule  LDIF.Apply do
 
   ############################
 
+  @spec apply_adds(all_changes :: list(), all_entries :: list()) :: list()
   defp apply_adds(all_changes, all_entries) when is_list(all_changes) and is_list(all_entries) do
 
     entries_lookup = entries_lookup_map(all_entries)
@@ -36,6 +38,7 @@ defmodule  LDIF.Apply do
 
   end
 
+  @spec apply_edits(all_changes :: list(), all_entries :: list()) :: list()
   defp apply_edits(all_changes, all_entries) when is_list(all_changes) and is_list(all_entries) do
 
     changes_lookup = changes_lookup_map(all_changes)
@@ -65,11 +68,13 @@ defmodule  LDIF.Apply do
        )
   end
 
+  @spec changes_lookup_map(list :: list()) :: list()
   defp changes_lookup_map(list) do
     list
     |> Enum.group_by(fn c -> DNUtils.normalize_dn(c.dn) end, fn c -> c end)
   end
 
+  @spec changes_lookup_map(list :: list()) :: map()
   defp entries_lookup_map(list) do
     list
     |> Enum.map(fn entry -> {DNUtils.normalize_dn(entry.dn), entry} end)

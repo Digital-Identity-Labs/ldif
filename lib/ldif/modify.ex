@@ -42,6 +42,7 @@ defmodule LDIF.Modify do
     end
   end
 
+  @spec modify(change :: struct(), entry :: %Entry{}) :: %Entry{}
   def modify(%{modification: :replace} = change, entry) do
     if is_nil(change.values) or Enum.empty?(change.values) do
       %{entry | attributes: Map.delete(entry.attributes, "#{change.attribute}")}
@@ -49,7 +50,7 @@ defmodule LDIF.Modify do
       %{entry | attributes: Map.put(entry.attributes, "#{change.attribute}", change.values)}
     end
   end
-
+  
   def modify(%{modification: :add} = change, entry) do
     old = Map.get(entry.attributes, "#{change.attribute}", [])
     new = Map.get(change, :values, [])
@@ -57,7 +58,7 @@ defmodule LDIF.Modify do
 
     %{entry | attributes: Map.put(entry.attributes, "#{change.attribute}", values)}
   end
-
+  
   def modify(%{modification: :delete} = change, entry) do
     if Map.get(entry.attributes, "#{change.attribute}", false) do
       if change.values do
@@ -71,7 +72,7 @@ defmodule LDIF.Modify do
       raise "Entry #{entry.dn} does not have a #{change.attribute} to delete!"
     end
   end
-
+  
   def modify(%{modification: other}, entry) do
     raise "Unknown modification type #{other} for #{entry.dn}"
   end

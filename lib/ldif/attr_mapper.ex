@@ -2,6 +2,8 @@ defmodule LDIF.AttrMapper do
 
   require Logger
 
+  alias LDIF.Entry
+  
   @attr_map %{
     "c" => :country,
     "carlicense" => :car_license,
@@ -46,6 +48,7 @@ defmodule LDIF.AttrMapper do
     "uidnumber" => :uid_number
   }
 
+  @spec entry_to_map(entry :: %Entry{}, opts :: keyword()) :: map()
   def entry_to_map(entry, opts \\ []) do
     entry.attributes
     |> Enum.map(fn {k, v} -> {to_sca(k, opts), v} end)
@@ -54,10 +57,12 @@ defmodule LDIF.AttrMapper do
     |> Map.put(:dn, entry.dn)
   end
 
+  @spec default_attribute_map() :: map()
   def default_attribute_map() do
     @attr_map
   end
 
+  @spec to_sca(key :: binary(), opts :: keyword()) :: atom()
   defp to_sca(key, opts) do
     mapper = opts[:attr_map] || @attr_map
     try do

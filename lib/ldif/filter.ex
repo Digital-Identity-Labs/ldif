@@ -1,5 +1,6 @@
 defmodule LDIF.Filter do
 
+  @spec objectclass(enum :: Enumerable.t(), class :: binary(), bool :: boolean()) :: Enumerable.t()
   def objectclass(enum, class, bool \\ true) do
     enum
     |> Enum.filter(
@@ -12,6 +13,7 @@ defmodule LDIF.Filter do
        )
   end
 
+  @spec attribute(enum :: Enumerable.t(), attr :: binary(), bool :: boolean()) :: Enumerable.t()
   def attribute(enum, attr, bool \\ true) do
     enum
     |> Enum.filter(
@@ -19,6 +21,7 @@ defmodule LDIF.Filter do
        )
   end
 
+  @spec attribute_has(enum :: Enumerable.t(), attr :: binary(), value :: binary(), bool :: boolean()) :: Enumerable.t()
   def attribute_has(enum, attr, value, bool \\ true) do
     enum
     |> Enum.filter(
@@ -26,10 +29,12 @@ defmodule LDIF.Filter do
        )
   end
 
+  @spec person(enum :: Enumerable.t(), bool :: boolean()) :: Enumerable.t()
   def person(enum, bool \\ true) do
     objectclass(enum, "person", bool)
   end
 
+  @spec change(enum :: Enumerable.t(), bool :: boolean()) :: Enumerable.t()
   def change(enum, bool \\ true) do
     enum
     |> Enum.filter(
