@@ -36,9 +36,9 @@ defmodule  LDIF.Import.Changes do
        )
   end
 
-  defp join(map, _opts) when is_map(map) do
-    map
-  end
+#  defp join(map, _opts) when is_map(map) do
+#    map
+#  end
 
   defp join(parts, _opts) when is_list(parts) do
 

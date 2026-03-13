@@ -5,6 +5,15 @@ defmodule LDIF.ModDN do
 
   alias __MODULE__
   alias LDIF.DNUtils
+  alias LDIF.Entry
+
+  @type t :: %__MODULE__{
+               dn: binary(),
+               deleteoldrdn: boolean(),
+               newsuperior: nil | binary(),
+               newrdn: nil | binary(),
+             }
+
 
   #@derive Jason.Encoder
   defstruct [
@@ -14,6 +23,7 @@ defmodule LDIF.ModDN do
     newrdn: nil
   ]
 
+  @spec new(dn :: binary(), attributes :: map()) :: struct()
   def new(dn, changes) do
 
     changes = Map.delete(changes, "dn")
@@ -26,6 +36,7 @@ defmodule LDIF.ModDN do
     %ModDN{dn: dn, newsuperior: newsuperior, deleteoldrdn: deleteoldrdn, newrdn: newrdn}
   end
 
+  @spec apply_to(change :: struct(), entry :: %Entry{} | nil) :: list(%Entry{})
   def apply_to(change, entry) do
     if DNUtils.normalize_dn(change.dn) == DNUtils.normalize_dn(entry.dn) do
 

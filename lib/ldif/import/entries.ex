@@ -27,9 +27,9 @@ defmodule  LDIF.Import.Entries do
     |> Transform.entry(opts)
   end
 
-  defp join(map, _opts) when is_map(map) do
-    map
-  end
+#  defp join(map, _opts) when is_map(map) do
+#    map
+#  end
 
   defp join(parts, _opts) when is_list(parts) do
 

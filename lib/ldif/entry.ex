@@ -7,6 +7,11 @@ defmodule LDIF.Entry do
   alias LDIF.DNUtils
   alias LDIF.AttrMapper
 
+  @type t :: %__MODULE__{
+               dn: binary(),
+               attributes: map()
+             }
+             
   #@derive Jason.Encoder
   defstruct [
     dn: nil,

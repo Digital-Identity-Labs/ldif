@@ -5,18 +5,26 @@ defmodule LDIF.Delete do
 
   alias __MODULE__
   alias LDIF.DNUtils
+  alias LDIF.Entry
+
+  @type t :: %__MODULE__{
+               dn: binary()
+             }
+
 
   #@derive Jason.Encoder
   defstruct [
     dn: nil
   ]
 
+  @spec new(dn :: binary(), attributes :: map()) :: struct()
   def new(dn, changes) do
     Map.delete(changes, "dn")
     |> Map.delete("changetype")
     %Delete{dn: dn}
   end
 
+  @spec apply_to(change :: struct(), entry :: %Entry{} | nil) :: list(%Entry{})
   def apply_to(change, entry) do
     if DNUtils.normalize_dn(change.dn) == DNUtils.normalize_dn(entry.dn) do
       []

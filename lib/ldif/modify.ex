@@ -5,8 +5,17 @@ defmodule LDIF.Modify do
 
   alias __MODULE__
   alias LDIF.DNUtils
+  alias LDIF.Entry
 
   @modifications ["replace", "add", "delete"]
+
+  @type t :: %__MODULE__{
+               dn: binary(),
+               modification: atom(),
+               attribute: binary(),
+               values: map()
+             }
+
 
   #@derive Jason.Encoder
   defstruct [
@@ -16,6 +25,7 @@ defmodule LDIF.Modify do
     values: %{}
   ]
 
+  @spec new(dn :: binary(), attributes :: map()) :: struct()
   def new(dn, changes) do
     changes = Map.delete(changes, "dn") |> Map.delete("changetype")
     {modification, [attribute | _]} = Enum.find(changes, fn {k, _v} -> k in @modifications end)
@@ -23,6 +33,7 @@ defmodule LDIF.Modify do
     %Modify{dn: dn, modification: String.to_atom(modification), attribute: attribute, values: values}
   end
 
+  @spec apply_to(change :: struct(), entry :: %Entry{} | nil) :: list(%Entry{})
   def apply_to(change, entry) do
     if DNUtils.normalize_dn(change.dn) == DNUtils.normalize_dn(entry.dn) do
       [modify(change, entry)]
