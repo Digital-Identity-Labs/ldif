@@ -85,7 +85,7 @@ defmodule LDIF do
   Options to adjust the output are the same as for `decode_entries!/2`
   
   """
-  @spec decode_entries_as_stream!(ldif :: binary(), opts :: keyword()) :: %Stream{} | function()
+  @spec decode_entries_as_stream!(ldif :: binary(), opts :: keyword()) :: Stream.t() | function()
   def decode_entries_as_stream!(ldif, opts \\ []) do
     Import.entries(ldif, Keyword.merge(@default_import_opts, opts))
   end
@@ -96,7 +96,7 @@ defmodule LDIF do
   Options to adjust the output are the same as for `decode_entries!/2`
   
   """
-  @spec decode_changes_as_stream!(ldif :: binary(), opts :: keyword()) :: %Stream{} | function()
+  @spec decode_changes_as_stream!(ldif :: binary(), opts :: keyword()) :: Stream.t() | function()
   def decode_changes_as_stream!(ldif, opts \\ []) do
     Import.changes(ldif, Keyword.merge(@default_import_opts, opts))
   end

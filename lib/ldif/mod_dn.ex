@@ -34,7 +34,7 @@ defmodule LDIF.ModDN do
     %ModDN{dn: dn, newsuperior: newsuperior, deleteoldrdn: deleteoldrdn, newrdn: newrdn}
   end
 
-  @spec apply_to(change :: struct(), entry :: %Entry{} | nil) :: list(%Entry{})
+  @spec apply_to(change :: struct(), entry :: Entry.t() | nil) :: list(Entry.t())
   def apply_to(change, entry) do
     if DNUtils.normalize_dn(change.dn) == DNUtils.normalize_dn(entry.dn) do
 

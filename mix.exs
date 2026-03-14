@@ -6,13 +6,25 @@ defmodule Ldif.MixProject do
       app: :ldif,
       version: "0.1.0",
       elixir: "~> 1.16",
+      description:
+        "Parse and modify LDAP Data Interchange Format (LDIF) data",
+      package: package(),
+      name: "LDIF",
+      source_url: "https://github.com/Digital-Identity-Labs/ldif",
+      build_embedded: Mix.env() == :prod,
       start_permanent: Mix.env() == :prod,
-      deps: deps(),
+      test_coverage: [
+        tool: ExCoveralls
+      ],
+      cli: cli(),
       docs: [
         main: "readme",
         #logo: "logo.png",
         extras: ["README.md", "LICENSE"]
       ],
+      deps: deps(),
+      compilers: Mix.compilers(),
+      elixirc_paths: elixirc_paths(Mix.env())
     ]
   end
 
@@ -40,4 +52,30 @@ defmodule Ldif.MixProject do
       {:doctor, "~> 0.21", only: :dev, runtime: false}
     ]
   end
+
+
+  def cli do
+    [
+      preferred_envs: [
+        coveralls: :test,
+        "coveralls.detail": :test,
+        "coveralls.post": :test,
+        "coveralls.html": :test
+      ]
+    ]
+  end
+
+  defp package() do
+    [
+      licenses: ["MIT"],
+      links: %{
+        "GitHub" => "https://github.com/Digital-Identity-Labs/ldif"
+      }
+    ]
+  end
+
+  # Specifies which paths to compile per environment.
+  defp elixirc_paths(:test), do: ["lib", "test/support", "priv"]
+  defp elixirc_paths(_), do: ["lib", "priv"]
+  
 end

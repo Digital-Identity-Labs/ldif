@@ -50,7 +50,7 @@ defmodule LDIF.AttrMapper do
     "uidnumber" => :uid_number
   }
 
-  @spec entry_to_map(entry :: %Entry{}, opts :: keyword()) :: map()
+  @spec entry_to_map(entry :: Entry.t(), opts :: keyword()) :: map()
   def entry_to_map(entry, opts \\ []) do
     entry.attributes
     |> Enum.map(fn {k, v} -> {to_sca(k, opts), v} end)

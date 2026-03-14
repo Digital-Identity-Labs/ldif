@@ -6,7 +6,7 @@ defmodule  LDIF.Import.Entries do
   alias LDIF.Import.Ingest
   alias LDIF.Import.Transform
 
-  @spec import(ldif ::binary(), opts :: keyword()) :: function() | %Stream{}  
+  @spec import(ldif ::binary(), opts :: keyword()) :: function() | Stream.t()  
   def import(ldif, opts \\ []) do
     ldif
     |> Record.stream()

@@ -1,7 +1,7 @@
 defmodule  LDIF.Import.Record do
   @moduledoc false
   
-  @spec stream(records_text :: binary()) :: function() | %Stream{} 
+  @spec stream(records_text :: binary()) :: function() | Stream.t() 
   def stream(records_text) do
     records_text
     |> String.trim()

@@ -21,7 +21,7 @@ defmodule LDIF.Entry do
   ]
 
   @doc false
-  @spec new(dn :: binary(), attributes :: map()) :: %Entry{}
+  @spec new(dn :: binary(), attributes :: map()) :: Entry.t()
   def new(dn, attributes \\ %{}) do
     attributes = Map.delete(attributes, "dn")
     %Entry{dn: dn, attributes: attributes}
@@ -31,7 +31,7 @@ defmodule LDIF.Entry do
   Returns the DN (Distinguished Name) of the entry
   
   """
-  @spec dn(entry :: %Entry{}) :: binary()
+  @spec dn(entry :: Entry.t()) :: binary()
   def dn(entry) do
     entry.dn
   end
@@ -40,7 +40,7 @@ defmodule LDIF.Entry do
   Returns a normalized version of the DN (Distinguished Name) of the entry
   
   """
-  @spec ndn(entry :: %Entry{}) :: binary()
+  @spec ndn(entry :: Entry.t()) :: binary()
   def ndn(entry) do
     DNUtils.normalize_dn(entry.dn)
   end
@@ -49,7 +49,7 @@ defmodule LDIF.Entry do
   Returns the RDN (Relative Distinguished Name) of the entry
   
   """
-  @spec rdn(entry :: %Entry{}) :: binary()
+  @spec rdn(entry :: Entry.t()) :: binary()
   def rdn(entry) do
     DNUtils.rdn(entry.dn)
   end
@@ -58,7 +58,7 @@ defmodule LDIF.Entry do
   Returns a normalized version of the RDN (Relative Distinguished Name) of the entry
   
   """
-  @spec nrdn(entry :: %Entry{}) :: binary()
+  @spec nrdn(entry :: Entry.t()) :: binary()
   def nrdn(entry) do
     DNUtils.nrdn(entry.dn)
   end
@@ -67,7 +67,7 @@ defmodule LDIF.Entry do
   Returns the superior part of the entry's DN (this is the opposite of the RDN, the tail)
   
   """
-  @spec superior(entry :: %Entry{}) :: binary()
+  @spec superior(entry :: Entry.t()) :: binary()
   def superior(entry) do
     DNUtils.superior(entry.dn)
   end
@@ -78,7 +78,7 @@ defmodule LDIF.Entry do
   Attribute names (the keys) will be strings.
   
   """
-  @spec attributes(entry :: %Entry{}) :: map()
+  @spec attributes(entry :: Entry.t()) :: map()
   def attributes(entry) do
     entry.attributes || %{}
   end
@@ -90,7 +90,7 @@ defmodule LDIF.Entry do
     in empty lists being returned.
   
   """
-  @spec attribute(entry :: %Entry{}, attribute :: binary()) :: list()
+  @spec attribute(entry :: Entry.t(), attribute :: binary()) :: list()
   def attribute(entry, attribute) do
     attributes(entry)[attribute] || []
   end
@@ -102,7 +102,7 @@ defmodule LDIF.Entry do
    being returned.
   
   """
-  @spec get(entry :: %Entry{}, attribute :: binary()) :: list() | nil
+  @spec get(entry :: Entry.t(), attribute :: binary()) :: list() | nil
   def get(entry, attribute) do
     attributes(entry)[attribute]
   end
@@ -113,7 +113,7 @@ defmodule LDIF.Entry do
   If an attribute is missing it will be created.
   
   """
-  @spec add(entry :: %Entry{}, attribute :: binary(), values :: list()) :: %Entry{}
+  @spec add(entry :: Entry.t(), attribute :: binary(), values :: list()) :: Entry.t()
   def add(entry, attribute, values) do
     old = Map.get(entry.attributes, attribute, [])
     %{entry | attributes: Map.put(entry.attributes, attribute, normlist(old ++ List.wrap(values)))}
@@ -123,7 +123,7 @@ defmodule LDIF.Entry do
   Merge together all tagged attributes, returning a new Entry.
   
   """
-  @spec merge_tagged(entry :: %Entry{}) :: %Entry{}
+  @spec merge_tagged(entry :: Entry.t()) :: Entry.t()
   def merge_tagged(entry) do
     attributes = entry.attributes
                  |> Enum.map(fn {k, v} -> {List.first(String.split(k, ";")), v} end)
@@ -145,7 +145,7 @@ defmodule LDIF.Entry do
   Replaces the entire DN of the entry, returning a new Entry
   
   """
-  @spec moddn(entry :: %Entry{}, dn :: binary()) :: %Entry{}
+  @spec moddn(entry :: Entry.t(), dn :: binary()) :: Entry.t()
   def moddn(entry, dn) do
     %{entry | dn: dn}
   end
@@ -154,7 +154,7 @@ defmodule LDIF.Entry do
   Replaces the RDN of the entry, returning a new entry.
   
   """
-  @spec modrdn(entry :: %Entry{}, rdn :: binary()) :: %Entry{}
+  @spec modrdn(entry :: Entry.t(), rdn :: binary()) :: Entry.t()
   def modrdn(entry, rdn) do
     dn = DNUtils.replace_rdn(entry.dn, rdn)
     %{entry | dn: dn}
@@ -164,7 +164,7 @@ defmodule LDIF.Entry do
   Deletes an attribute and all its values, returning a new entry
   
   """
-  @spec delete(entry :: %Entry{}, attribute :: binary()) :: %Entry{}
+  @spec delete(entry :: Entry.t(), attribute :: binary()) :: Entry.t()
   def delete(entry, attribute) do
     %{entry | attributes: Map.delete(entry.attributes, attribute)}
   end
@@ -173,7 +173,7 @@ defmodule LDIF.Entry do
   Deletes the specified value from an attribute, returning a new entry
   
   """
-  @spec delete(entry :: %Entry{}, attribute :: binary(), value :: binary()) :: %Entry{}
+  @spec delete(entry :: Entry.t(), attribute :: binary(), value :: binary()) :: Entry.t()
   def delete(entry, attribute, value) do
     values = Map.get(entry.attributes, attribute, [])
              |> Enum.map(fn v -> if v == value, do: nil, else: v end)
@@ -187,7 +187,7 @@ defmodule LDIF.Entry do
   Replaces all the values of the specified attribute with the provided values, returning a new Entry.
   
   """
-  @spec replace(entry :: %Entry{}, attribute :: binary(), values :: list()) :: %Entry{}
+  @spec replace(entry :: Entry.t(), attribute :: binary(), values :: list()) :: Entry.t()
   def replace(entry, attribute, values) do
     %{entry | attributes: Map.put(entry.attributes, attribute, values)}
   end
@@ -196,7 +196,7 @@ defmodule LDIF.Entry do
   Replaces the old value the specified attribute with the new value, returning a new Entry.
   
   """
-  @spec  replace(entry :: %Entry{}, attribute :: binary(), old_value :: binary(), new_value :: binary()) :: %Entry{}
+  @spec  replace(entry :: Entry.t(), attribute :: binary(), old_value :: binary(), new_value :: binary()) :: Entry.t()
   def replace(entry, attribute, old_value, new_value) do
     values = Map.get(entry.attributes, attribute, [])
              |> Enum.map(fn v -> if v == old_value, do: new_value, else: v end)
@@ -212,7 +212,7 @@ defmodule LDIF.Entry do
   You may provide your own custom mapping for keys using the `:attr_map` option.
   
   """
-  @spec to_map(entry :: %Entry{}, opts :: keyword()) :: map()
+  @spec to_map(entry :: Entry.t(), opts :: keyword()) :: map()
   def to_map(entry, opts \\ []) do
     AttrMapper.entry_to_map(entry, opts)
   end

@@ -31,7 +31,7 @@ defmodule LDIF.Modify do
     %Modify{dn: dn, modification: String.to_atom(modification), attribute: attribute, values: values}
   end
 
-  @spec apply_to(change :: struct(), entry :: %Entry{} | nil) :: list(%Entry{})
+  @spec apply_to(change :: struct(), entry :: Entry.t() | nil) :: list(Entry.t())
   def apply_to(change, entry) do
     if DNUtils.normalize_dn(change.dn) == DNUtils.normalize_dn(entry.dn) do
       [modify(change, entry)]
@@ -40,7 +40,7 @@ defmodule LDIF.Modify do
     end
   end
 
-  @spec modify(change :: struct(), entry :: %Entry{}) :: %Entry{}
+  @spec modify(change :: struct(), entry :: Entry.t()) :: Entry.t()
   def modify(%{modification: :replace} = change, entry) do
     if is_nil(change.values) or Enum.empty?(change.values) do
       %{entry | attributes: Map.delete(entry.attributes, "#{change.attribute}")}

@@ -22,7 +22,7 @@ defmodule LDIF.Add do
     %Add{dn: dn, attributes: changes}
   end
 
-  @spec apply_to(change :: struct(), entry :: %Entry{} | nil) :: list(%Entry{})
+  @spec apply_to(change :: struct(), entry :: Entry.t() | nil) :: list(Entry.t())
   def apply_to(change, nil) do
     [Entry.new(change.dn, change.attributes)]
   end
