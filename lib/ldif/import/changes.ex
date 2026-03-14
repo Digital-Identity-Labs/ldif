@@ -9,7 +9,7 @@ defmodule  LDIF.Import.Changes do
   alias LDIF.Import.Ingest
   alias LDIF.Import.Transform
 
-  @spec import(ldif :: binary(), opts :: keyword()) :: function() | Stream.t()
+  @spec import(ldif :: binary(), opts :: keyword()) :: function() | %Stream{}
   def import(ldif, opts \\ []) do
     ldif
     |> Record.stream()
