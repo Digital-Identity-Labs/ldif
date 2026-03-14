@@ -4,28 +4,75 @@
 Mix.install([{:ldif, git: "https://binaryape@github.com/Digital-Identity-Labs/ldif.git"}])
 ```
 
-## Section
+## Importing LDIF data
+
+First we need some LDIF data. Let's fetch two example files from Github
+
+```elixir
+entries_url = "https://raw.githubusercontent.com/Digital-Identity-Labs/ldif/refs/heads/main/test/support/rfc_jensen_entries.ldif"
+changes_url = "https://raw.githubusercontent.com/Digital-Identity-Labs/ldif/refs/heads/main/test/support/rfc_jensen_changes.ldif"
+
+ldif_entries = Req.get!(entries_url).body
+ldif_changes = Req.get!(changes_url).body
+```
+
+Next we'll parse the data, with an option set to normalize the Distinguished Names of each entry
+
+```elixir
+entries = LDIF.decode_entries!(ldif_entries, normalize_dns: true)
+```
+
+Changes can be parsed too. Each type of change has its own struct type.
+
+```elixir
+changes = LDIF.decode_changes!(ldif_changes, normalize_dns: true)
+```
+
+## Filtering lists of entries
+
+A few simple filters are included to select entries from a list
+
+```elixir
+entries
+|> LDIF.Filter.attribute_has("cn", "Bjorn Jensen")
+```
+
+```elixir
+entries
+|> LDIF.Filter.person()
+|> Enum.count()
+```
+
+## Applying Changes
+
+We can apply change entries to normal entries directly, without using an LDAP server.
+
+```elixir
+LDIF.apply_changes(changes, entries)
+```
+
+## Sigils
+
+Sigils can make testing and documentation easier, especially for smaller LDIF data
 
 ```elixir
 import LDIF.Sigil
 ```
 
 ```elixir
-
-
-list = ~L"""
-      dn:cn=Barbara Jensen, ou=Product Development, dc=airius, dc=com
-      objectclass:top
-      objectclass:person
-      objectclass:organizationalPerson
-      cn:Barbara Jensen
-      cn:Barbara J Jensen
-      cn:Babs Jensen
-      sn:Jensen
-      uid:bjensen
-      telephonenumber:+1 408 555 1212
-      description:Babs is a big sailing fan, and travels extensively in sea
-        rch of perfect sailing conditions.
-      title:Product Manager, Rod and Reel Division
-      """
+~L"""
+dn:cn=Barbara Jensen, ou=Product Development, dc=airius, dc=com
+objectclass:top
+objectclass:person
+objectclass:organizationalPerson
+cn:Barbara Jensen
+cn:Barbara J Jensen
+cn:Babs Jensen
+sn:Jensen
+uid:bjensen
+telephonenumber:+1 408 555 1212
+description:Babs is a big sailing fan, and travels extensively in sea
+  rch of perfect sailing conditions.
+title:Product Manager, Rod and Reel Division
+"""n
 ```
