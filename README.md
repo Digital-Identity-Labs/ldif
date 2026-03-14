@@ -1,8 +1,10 @@
 # LDIF
 
-`LDIF` is a simple Elixir parser for [LDIF](https://www.rfc-editor.org/rfc/rfc2849)-formatted text files. 
+LDIF is a simple Elixir parser for LDAP Data Interchange Format ([LDIF](https://en.wikipedia.org/wiki/LDAP_Data_Interchange_Format)) text files. 
 It will convert the entries within them to Elixir structs, and can directly apply LDIF change records to normal
-LDIF records. RFC 2849 describes LDIF as:
+LDIF records.
+
+[RFC 2849](https://www.rfc-editor.org/rfc/rfc2849) describes LDIF as:
 
 > ... a file format suitable for describing
 > directory information or modifications made to directory information.
@@ -44,6 +46,7 @@ title:Product Manager, Rod and Reel Division
 * Import normal LDAP directory entries from a string or a file, as a list of structs.
 * Import LDIF-formatted changes and apply to them to a list of entries
 * Supports including external data in entry attributes. Both file:// and https:// are supported but optional
+* Binary data such as images and encoded text should be parsed correctly
 * A few utility functions are provided to directly modify entries - you can change DNs, adjust attribute values and
   so on.
 
@@ -68,7 +71,7 @@ ldif = File.read!("test/support/rfc_jensen_entries.ldif")
 
 LDIF.decode_entries!(ldif)
 |> List.first()
-#=> []
+#=> %LDIF.Entry{dn: "ou=Product Development, dc=airius, dc=com", attributes: %{"objectClass" => ["top", "organizationalUnit"],"ou" => ["Product Development"]}}
 ```
 
 ### Using a sigil to parse LDIF, then reading an attribute
@@ -94,7 +97,7 @@ LDIF.decode_entries!(ldif)
     """
     |> List.first()
     |> LDIF.Entry.attribute("cn")
-#=> []
+    #=> ["Barbara Jensen", "Barbara J Jensen", "Babs Jensen"]
 ```
 
 ### Applying changes to a list of entries
@@ -107,7 +110,6 @@ changes = File.read!("test/support/rfc_jensen_changes.ldif")
           |> LDIF.decode_changes!(ldif)
 
 LDIF.apply_changes!(changes, entries)
-#=> []
 ```
 
 ## Installation
@@ -126,10 +128,10 @@ end
 ## References
 
 ### LDIF Resources
-* https://www.rfc-editor.org/rfc/rfc2849
-* https://en.wikipedia.org/wiki/LDAP_Data_Interchange_Format
-* https://datatracker.ietf.org/doc/html/rfc3866
-* https://ldapwiki.com/wiki/Wiki.jsp?page=Modrdn
+* [LDAP Data Interchange Format, RFC 2849](https://www.rfc-editor.org/rfc/rfc2849)
+* [LDIF at Wikipedia](https://en.wikipedia.org/wiki/LDAP_Data_Interchange_Format)
+* [Language Tags and Ranges in the
+  Lightweight Directory Access Protocol (LDAP) RFC 3866](https://datatracker.ietf.org/doc/html/rfc3866)
 
 ## Documentation
 
@@ -142,8 +144,8 @@ be found at <https://hexdocs.pm/ldif>.
 You can request new features by creating an [issue](https://github.com/Digital-Identity-Labs/ldif/issues),
 or submit a [pull request](https://github.com/Digital-Identity-Labs/ldif/pulls) with your contribution.
 
-If you are comfortable working with Python but this package's Elixir code is unfamiliar then this blog post may help:
-[Elixir For Humans Who Know Python](https://hibox.live/elixir-for-humans-who-know-python)
+If you are comfortable working with Python but this package's Elixir code is unfamiliar then this
+blog post may help: [Elixir For Humans Who Know Python](https://hibox.live/elixir-for-humans-who-know-python)
 
 This software was produced without generative AI and no contributions from generative AI will be accepted.  
 

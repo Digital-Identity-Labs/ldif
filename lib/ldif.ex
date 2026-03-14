@@ -1,10 +1,11 @@
 defmodule LDIF do
   @moduledoc """
-  `LDIF` is a simple Elixir parser for [LDIF](https://www.rfc-editor.org/rfc/rfc2849)-formatted text files. 
+  LDIF is a simple Elixir parser for LDAP Data Interchange Format 
+  ([LDIF](https://en.wikipedia.org/wiki/LDAP_Data_Interchange_Format)) text files. 
   It will convert the entries within them to Elixir structs, and can directly apply LDIF change records to normal
   LDIF records.
  
-  RFC 2849 describes LDIF as:
+  [RFC 2849](https://www.rfc-editor.org/rfc/rfc2849) describes LDIF as:
 
   > ... a file format suitable for describing
   > directory information or modifications made to directory information.
@@ -21,7 +22,8 @@ defmodule LDIF do
 
   * Import normal LDAP directory entries from a string or a file, as a list of structs.
   * Import LDIF-formatted changes and apply to them to a list of entries
-  * Supports including external data in entry attributes. Both file:// and https:// are supported but optional
+  * Supports including external data in entry attributes. Both file:// and https:// are supported but optional  
+  * Binary data such as images and encoded text should be parsed correctly
   * A few utility functions are provided to directly modify entries - you can change DNs, adjust attribute values and
   so on.
 
