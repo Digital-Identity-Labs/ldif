@@ -39,8 +39,7 @@ title:Product Manager, Rod and Reel Division
 [![API Docs](https://img.shields.io/badge/api-docs-yellow.svg?style=flat)](http://hexdocs.pm/ldif/)
 ![Github Elixir CI](https://github.com/Digital-Identity-Labs/ldif/workflows/ElixirCI/badge.svg)
 
-[![Run in Livebook](https://livebook.dev/badge/v1/blue.svg)](https://livebook.dev/run?url=https%3A%2F%2Fraw.githubusercontent.com%2FDigital-Identity-Labs%2Fldif%2Fmain%2Fldif_notebook.livemd)
-
+[![Run in Livebook](https://livebook.dev/badge/v1/blue.svg)](https://livebook.dev/run?url=https%3A%2F%2Fraw.githubusercontent.com%2FDigital-Identity-Labs%2Fldif%2Frefs%2Fheads%2Fmain%2Fldif_workbook.livemd)
 ## Features
 
 * Import normal LDAP directory entries from a string or a file, as a list of structs.
