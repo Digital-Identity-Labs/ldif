@@ -7,7 +7,7 @@ defmodule Ldif.MixProject do
       version: "0.1.0",
       elixir: "~> 1.16",
       description:
-        "Parse and modify LDAP Data Interchange Format (LDIF) data",
+        "Parse and modify LDAP Data Interchange Format (LDIF)",
       package: package(),
       name: "LDIF",
       source_url: "https://github.com/Digital-Identity-Labs/ldif",
