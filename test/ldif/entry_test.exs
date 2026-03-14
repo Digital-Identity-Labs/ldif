@@ -1,6 +1,8 @@
 defmodule EntryTest do
   use ExUnit.Case
 
+  doctest LDIF.Entry
+  
   alias LDIF.Entry
 
   @text """

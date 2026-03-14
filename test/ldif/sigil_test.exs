@@ -1,6 +1,8 @@
 defmodule SigilTest do
   use ExUnit.Case
 
+  doctest LDIF.Sigil
+  
   alias LDIF.Entry
 
   import LDIF.Sigil

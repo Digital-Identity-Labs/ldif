@@ -1,8 +1,8 @@
 # LDIF
 
 `LDIF` is a simple Elixir parser for [LDIF](https://www.rfc-editor.org/rfc/rfc2849)-formatted text files. 
-It will convert the entries in them to Elixir structs, and can directly apply LDIF change records to normal
-LDIF records. RFC 2849 describes it as:
+It will convert the entries within them to Elixir structs, and can directly apply LDIF change records to normal
+LDIF records. RFC 2849 describes LDIF as:
 
 > ... a file format suitable for describing
 > directory information or modifications made to directory information.
@@ -47,7 +47,7 @@ title:Product Manager, Rod and Reel Division
 * A few utility functions are provided to directly modify entries - you can change DNs, adjust attribute values and
   so on.
 
-The top level `LDIF` module may contain all the functions you need, but the following other modules may be of use:
+  The top level `LDIF` module could contain all the functions you need but the following other modules may be of use:
 
 * `LDIF.Sigil` provides a sigil for importing LDIF data in documentation and tests
 * `LDIF.Entry` has various features for working with LDIF entries
@@ -77,7 +77,7 @@ LDIF.decode_entries!(ldif)
 
     require LDIF.Sigil
 
-    entries = ~L"""
+    ~L"""
     dn:cn=Barbara Jensen, ou=Product Development, dc=airius, dc=com
     objectclass:top
     objectclass:person
@@ -142,8 +142,10 @@ be found at <https://hexdocs.pm/ldif>.
 You can request new features by creating an [issue](https://github.com/Digital-Identity-Labs/ldif/issues),
 or submit a [pull request](https://github.com/Digital-Identity-Labs/ldif/pulls) with your contribution.
 
-If you are comfortable working with Python but ROR's Elixir code is unfamiliar then this blog post may help:
+If you are comfortable working with Python but this package's Elixir code is unfamiliar then this blog post may help:
 [Elixir For Humans Who Know Python](https://hibox.live/elixir-for-humans-who-know-python)
+
+This software was produced without generative AI and no contributions from generative AI will be accepted.  
 
 ## Copyright and License
 
