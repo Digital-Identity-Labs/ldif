@@ -35,7 +35,7 @@ description:Babs is a big sailing fan, and travels extensively in sea
 title:Product Manager, Rod and Reel Division
 ```
 
-[![Hex pm](http://img.shields.io/hexpm/v/ldif.svg?style=flat)](https://hex.pm/packages/ror)
+[![Hex pm](http://img.shields.io/hexpm/v/ldif.svg?style=flat)](https://hex.pm/packages/ldif)
 [![API Docs](https://img.shields.io/badge/api-docs-yellow.svg?style=flat)](http://hexdocs.pm/ldif/)
 ![Github Elixir CI](https://github.com/Digital-Identity-Labs/ldif/workflows/ElixirCI/badge.svg)
 
