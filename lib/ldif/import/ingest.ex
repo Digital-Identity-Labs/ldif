@@ -42,7 +42,6 @@ defmodule  LDIF.Import.Ingest do
     if opts[:ext_http] == true do
       Req.get!(value).body
       Req.new(http_options(opts[:http] || []))
-      |> CurlReq.Plugin.attach()
       |> Req.get!(url: value)
       |> Map.get(:body)
     else
@@ -67,7 +66,8 @@ defmodule  LDIF.Import.Ingest do
         user_agent: "LDIF #{Application.spec(:ldif, :vsn)}",
         http_errors: :raise,
         max_retries: 3,
-        retry_delay: &retry_jitter/1
+        retry_delay: &retry_jitter/1,
+        compressed: true
       ],
       extra_options
     )

@@ -4,7 +4,7 @@ defmodule Ldif.MixProject do
   def project do
     [
       app: :ldif,
-      version: "0.1.0",
+      version: "0.1.1",
       elixir: "~> 1.16",
       description:
         "Parse and modify LDAP Data Interchange Format (LDIF)",
@@ -38,8 +38,7 @@ defmodule Ldif.MixProject do
   # Run "mix help deps" to learn about dependencies.
   defp deps do
     [
-      {:req, "~> 0.5"},
-      {:curl_req, "~> 0.98.0"},
+      {:req, "~> 0.6"},
       {:recase, "~> 0.9"},
 
       {:apex, "~> 1.2", only: [:dev, :test], runtime: false},
