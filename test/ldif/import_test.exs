@@ -194,12 +194,12 @@ defmodule ImportTest do
         cn: Horatio N Jensen
         objectclass: top
         objectclass: person
-        description:< https://www.rfc-editor.org/rfc/rfc2849
+        description:< https://www.rfc-editor.org/info/rfc2849/
         """
 
       assert %Entry{
                attributes: %{
-                 "description" => ["\n<!DOCTYPE html" <> _]
+                 "description" => ["<!DOCTYPE html" <> _]
                }
              } = Import.entries(text, ext_http: true)
                  |> Enum.to_list()
@@ -215,7 +215,7 @@ defmodule ImportTest do
         cn: Horatio N Jensen
         objectclass: top
         objectclass: person
-        description:< https://www.rfc-editor.org/rfc/rfc2849
+        description:< https://www.rfc-editor.org/info/rfc2849/
         """
 
       assert_raise RuntimeError, fn ->
@@ -638,12 +638,12 @@ defmodule ImportTest do
         cn: Fiona Jensen
         sn: Jensen
         uid: fiona
-        description:< https://www.rfc-editor.org/rfc/rfc2849
+        description:< https://www.rfc-editor.org/info/rfc2849/
         """
 
       assert %Add{
                attributes: %{
-                 "description" => ["\n<!DOCTYPE html" <> _]
+                 "description" => ["<!DOCTYPE html" <> _]
                }
              } = Import.changes(text, ext_http: true)
                  |> Enum.to_list()

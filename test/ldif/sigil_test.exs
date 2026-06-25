@@ -93,12 +93,12 @@ defmodule SigilTest do
       uid:bjensen
       telephonenumber:+1 408 555 1212
       title:Product Manager, Rod and Reel Division
-      description:< https://www.rfc-editor.org/rfc/rfc2849
+      description:< https://www.rfc-editor.org/info/rfc2849/
       """X
 
       assert %Entry{
                attributes: %{
-                 "description" => ["\n<!DOCTYPE html" <> _]
+                 "description" => ["<!DOCTYPE html" <> _]
                }
              } = List.first(list)
 

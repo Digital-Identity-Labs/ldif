@@ -214,12 +214,12 @@ defmodule ImportChangesTest do
         cn: Fiona Jensen
         sn: Jensen
         uid: fiona
-        description:< https://www.rfc-editor.org/rfc/rfc2849
+        description:< https://www.rfc-editor.org/info/rfc2849/
         """
 
       assert %LDIF.Add{
                attributes: %{
-                 "description" => ["\n<!DOCTYPE html" <> _]
+                 "description" => ["<!DOCTYPE html" <> _]
                }
              } = Changes.import(text, ext_http: true)
                  |> Enum.to_list()
