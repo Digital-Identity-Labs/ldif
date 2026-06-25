@@ -138,7 +138,7 @@ defmodule LDIF.Entry do
                     )
                  |> Map.new()
 
-    %Entry{entry | attributes: attributes}
+    %{entry | attributes: attributes}
   end
 
   @doc """
